@@ -11,15 +11,15 @@ export default function ClassromHeader() {
         <Center>
             <SimpleGrid
                 w={{
-                    base: "0%",
-                    sm: "0%",
+                    base: "90%",
+                    sm: "90%",
                     md: "99%",
                     lg: "99%",
                     xl: "90%",
                     "2xl": "95%"
                 }}
 
-                columns={[6, 0, 5, 5, 6, 6]}
+                columns={[1, 2, 3, 5, 6, 6]}
                 spacing='20px'
             >
 
@@ -138,7 +138,7 @@ export default function ClassromHeader() {
                         xl: "190px",
                         "2xl": "210px"
                     }}
-                    display={['none', 'none', 'none', 'none', 'flex', 'flex']}
+                    // display={['none', 'none', 'none', 'none', 'flex', 'flex']}
                     h="70px"
                     bg={'white'}
                     mt="20px"

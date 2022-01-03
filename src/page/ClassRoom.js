@@ -1,20 +1,30 @@
 import { Box, Center, SimpleGrid, Image, Icon } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
 import ClassromHeader from '../component/ClassromHeader'
 import Student from '../component/Student'
 import { useQuery } from "@apollo/client";
 import { GET_STUDENTS } from '../schema/student';
 import brandlogo from '.././images/brandlogo.png'
 import { IoLogOutOutline } from 'react-icons/io5'
+import { useParams } from 'react-router-dom';
 
 export default function ClassRoom() {
 
+    const { classid, academicid } = useParams()
+
+    const [studentData, setStudentData] = useState([])
+
     const { loading, error, data } = useQuery(GET_STUDENTS, {
         variables: {
-            academicYearId: "61838053529bb760499bfec7",
-            classId: "61a08e68f3aef0a2f902b574"
+            academicYearId: academicid,
+            classId: classid
+        },
+        onCompleted: ({ getStudentforPickingUP }) => {
+            setStudentData(getStudentforPickingUP)
         }
     });
+
+    console.log(data)
 
     // if (loading) return <p>Loading...</p>;
     // if (error) return <p>Error :(</p>;
@@ -23,35 +33,41 @@ export default function ClassRoom() {
         <Box>
             <ClassromHeader />
             <Center>
-               
+
 
                 <SimpleGrid
                     w={{
-                        base: "0%",
-                        sm: "0%",
+                        base: "90%",
+                        sm: "90%",
                         md: "99%",
                         lg: "99%",
                         xl: "90%",
                         "2xl": "95%"
                     }}
 
-                    columns={[6, 0, 5, 5, 6, 7]}
+                    columns={[2, 2, 4, 5, 6, 7]}
                     spacing='20px'
                     mt="20px"
                 >
-                    {/* {
-                        data &&
-                        data.getStudentforPickingUP.map(stu =>
-                            <Student
+                    {
+                        studentData && studentData.map(stu =>
+                            // <Student
+                            //     key={stu._id}
+                            //     stuID={stu._id}
+                            //     stuName={stu.englishName}
+                            //     transportation={stu.transportation}
+                            //     profile={stu.profileImg}
+                            // />
+                            <Student data={stu}
+                                // stuName={`${stu?.lastName} ${stu?.firstName}`}
+                                // transportation={stu.transportation}
+                                // profile={stu.profileImg}
                                 key={stu._id}
-                                stuID={stu._id}
-                                stuName={stu.englishName}
-                                transportation={stu.transportation}
-                                profile={stu.profileImg}
+                                // stuID={stu._id}
                             />
                         )
-                    } */}
-                    <Student
+                    }
+                    {/* <Student
                         stuName={'Dy Dyka'}
                         transportation={"BUS"}
                     />
@@ -86,7 +102,7 @@ export default function ClassRoom() {
                     <Student
                         stuName={'Dy Dyka'}
                         transportation={"BUS"}
-                    />
+                    /> */}
 
                 </SimpleGrid>
 

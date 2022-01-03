@@ -11,6 +11,8 @@ import {
 } from "@apollo/client";
 import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
+import { cache } from './function/fn';
+import { IS_LOGGED_IN } from './schema/login';
 
 const httpLink = new HttpLink({
   uri: process.env.REACT_APP_GRAPHQL_ENDPIONT
@@ -36,17 +38,22 @@ const splitLink = split(
 
 const client = new ApolloClient({
   link: splitLink,
-  cache: new InMemoryCache()
+  cache: cache
 });
 
+cache.writeQuery({
+    
+  query: IS_LOGGED_IN,
+  data: {
+      isLoggedIn: localStorage.getItem("access_token"),
+  },
+  
+});
 
 ReactDOM.render(
-
-  <React.StrictMode>
     <ApolloProvider client={client}>
       <App />
-    </ApolloProvider>
-  </React.StrictMode>,
+    </ApolloProvider>,
   document.getElementById('root')
 );
 

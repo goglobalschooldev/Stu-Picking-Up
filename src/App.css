@@ -4,3 +4,13 @@ body {
 .stu-boder{
     box-shadow: 0px 0px 12px red;
 }
+
+.card-sectionshift{
+    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px!important; */
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    transition: all .3s ease;
+}
+.card-sectionshift:hover{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px!important;
+}
+
