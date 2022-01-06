@@ -19,8 +19,8 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/">
-            {/* <Login /> */}
-            <ClassRoom />
+            <Login />
+            {/* <ClassRoom /> */}
           </Route>
         </Switch>
       </Router>
