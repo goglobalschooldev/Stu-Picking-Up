@@ -7,14 +7,32 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  split, HttpLink
+  split, HttpLink,
+  ApolloLink
 } from "@apollo/client";
-import { getMainDefinition } from '@apollo/client/utilities';
+import { createUploadLink } from 'apollo-upload-client';
+import { setContext } from '@apollo/client/link/context';
 import { WebSocketLink } from '@apollo/client/link/ws';
+import { onError } from '@apollo/client/link/error';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { cache } from './function/fn';
+import { IS_LOGGED_IN } from './schema/login';
 
 const httpLink = new HttpLink({
   uri: process.env.REACT_APP_GRAPHQL_ENDPIONT
 });
+
+const logoutLink = onError((networkError) => {
+  if(networkError?.response?.errors[0]?.message==='jwt expired'){
+    alert("token expired")
+    localStorage.clear()
+    // window.location.reload()
+  }
+})
+
+// const upLoadLink = createUploadLink({
+//   uri: process.env.REACT_APP_GRAPHQL_ENDPIONT,
+// })
 
 const wsLink = new WebSocketLink({
   uri: process.env.REACT_APP_GRAPHQL_ENDPIONT_SUBSCRIPTION,
@@ -22,6 +40,7 @@ const wsLink = new WebSocketLink({
     reconnect: true
   },
 });
+
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
@@ -31,22 +50,37 @@ const splitLink = split(
     );
   },
   wsLink,
-  httpLink,
+  httpLink
 );
 
-const client = new ApolloClient({
-  link: splitLink,
-  cache: new InMemoryCache()
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = JSON.parse(localStorage.getItem('access_token'));
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      Authorization: token ? `${token}` : "",
+    }
+  }
 });
 
+const client = new ApolloClient({
+  link:ApolloLink.from([logoutLink,authLink,splitLink]),
+  cache: cache
+});
+
+cache.writeQuery({
+  query: IS_LOGGED_IN,
+  data: {
+    isLoggedIn: localStorage.getItem("access_token"),
+  },
+});
 
 ReactDOM.render(
-
-  <React.StrictMode>
     <ApolloProvider client={client}>
       <App />
-    </ApolloProvider>
-  </React.StrictMode>,
+    </ApolloProvider>,
   document.getElementById('root')
 );
 

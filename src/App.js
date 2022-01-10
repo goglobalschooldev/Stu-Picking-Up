@@ -8,21 +8,40 @@ import {
   Route
 } from "react-router-dom";
 import ClassRoom from './page/ClassRoom';
-
-
-
+import { useQuery } from '@apollo/client';
+import { IS_LOGGED_IN } from './schema/login';
+import SectionShift from './page/SectionShift';
 
 function App() {
- 
+
+  const { data } = useQuery(IS_LOGGED_IN);
+  const login = !!data?.isLoggedIn
+
   return (
     <ChakraProvider theme={theme, colortheme}>
       <Router>
-        <Switch>
-          <Route exact path="/">
-            <Login />
-            {/* <ClassRoom /> */}
-          </Route>
-        </Switch>
+
+        
+        {login ? <>
+          <Switch>
+            <Route exact path="/">
+              <SectionShift />
+            </Route>
+            <Route path="/classroom/:classid&:academicid">
+              {/* <Login /> */}
+              <ClassRoom />
+            </Route>
+          </Switch>
+        </>
+          : 
+          <>
+            <Switch>
+              <Route >
+                <Login />
+              </Route>
+            </Switch>
+          </>
+        }
       </Router>
     </ChakraProvider>
   );

@@ -2,11 +2,10 @@ import { Box, Center, Image, Icon, Flex, AlertDialog, AlertDialogOverlay, AlertD
 import React, { useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { ImWarning } from 'react-icons/im'
-import studentImage from '../images/DSC01658.jpg';
 import { useSubscription } from '@apollo/client';
 import { STU_SUBCRIPTION } from '../schema/student';
 
-export default function Student({ stuID, stuName, transportation, profile }) {
+export default function Student({ data }) {
     const [isOpen, setIsOpen] = React.useState(false)
     const [leave, setLeave] = useState(false)
     const onClose = () => setIsOpen(false)
@@ -15,9 +14,10 @@ export default function Student({ stuID, stuName, transportation, profile }) {
         setLeave(true)
     }
     const cancelRef = React.useRef()
-    const { data, loading } = useSubscription(
+
+    const { data:d, loading } = useSubscription(
         STU_SUBCRIPTION,
-        { variables: { studentId: stuID } }
+        { variables: { studentId: data?._id } }
     );
 
 
@@ -40,6 +40,7 @@ export default function Student({ stuID, stuName, transportation, profile }) {
             </Center>
         </Box>
     </Center>
+    
     const PickingUpUser = <Center>
         <Box
 
@@ -91,8 +92,8 @@ export default function Student({ stuID, stuName, transportation, profile }) {
             mt="10px"
             borderRadius={'10px'}
             className={
-                data &&
-                    data.pickingUpFilter.picked ? 'stu-boder' : ''
+                d &&
+                    d.pickingUpFilter.picked ? 'stu-boder' : ''
             }
             cursor={"pointer"}
             onClick={() => setIsOpen(true)}
@@ -100,10 +101,12 @@ export default function Student({ stuID, stuName, transportation, profile }) {
             <Box>
                 <Center>
                     <Image
+                        objectFit={'cover'}
                         borderRadius='full'
                         boxSize='95px'
                         mt={"25px"}
-                        src={studentImage}
+                        src={`${process.env.React_App_UPLOAD_URL}${data?.profileImg}`}
+                        // src={st}
                         alt='Dan Abramov'
                     />
                 </Center>
@@ -113,7 +116,8 @@ export default function Student({ stuID, stuName, transportation, profile }) {
                 fontWeight={"semibold"}
                 mt="20px"
             >
-                {stuName}
+                {/* {data?.lastName} {data?.firstName} */}
+                {data?.englishName}
             </Box>
             <Box
                 textAlign={"center"}
@@ -127,7 +131,7 @@ export default function Student({ stuID, stuName, transportation, profile }) {
                 fontSize={"15px"}
                 fontWeight={"semibold"}
             >
-                {transportation}
+                {data?.transportation}
             </Box>
             {
                 // data &&

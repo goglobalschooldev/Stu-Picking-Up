@@ -1,25 +1,26 @@
-import React from 'react'
-import { Box, Center, Flex, Icon, SimpleGrid } from '@chakra-ui/react'
-import { SiGoogleclassroom } from 'react-icons/si'
-import { ImSun } from 'react-icons/im'
-import { HiOutlineUserGroup } from 'react-icons/hi'
+import React from 'react';
+import { Box, Center, Flex, Icon, SimpleGrid } from '@chakra-ui/react';
+import { SiGoogleclassroom } from 'react-icons/si';
+import { ImSun } from 'react-icons/im';
+import { HiOutlineUserGroup } from 'react-icons/hi';
 import { FaFemale, FaUsersSlash } from 'react-icons/fa';
-import { GiTeacher } from 'react-icons/gi'
-import { IoLogOutOutline } from 'react-icons/io5'
+import { GiTeacher } from 'react-icons/gi';
+
 export default function ClassromHeader() {
+    
     return (
         <Center>
             <SimpleGrid
                 w={{
-                    base: "0%",
-                    sm: "0%",
+                    base: "90%",
+                    sm: "90%",
                     md: "99%",
                     lg: "99%",
                     xl: "90%",
                     "2xl": "95%"
                 }}
 
-                columns={[6, 0, 5, 5, 6, 6]}
+                columns={[1, 2, 3, 5, 6, 6]}
                 spacing='20px'
             >
 
@@ -138,7 +139,7 @@ export default function ClassromHeader() {
                         xl: "190px",
                         "2xl": "210px"
                     }}
-                    display={['none', 'none', 'none', 'none', 'flex', 'flex']}
+                    // display={['none', 'none', 'none', 'none', 'flex', 'flex']}
                     h="70px"
                     bg={'white'}
                     mt="20px"
@@ -184,9 +185,7 @@ export default function ClassromHeader() {
                             <Box fontSize={"12px"} fontWeight={'semibold'}  >Absent</Box>
 
                         </Box>
-                        <Box cursor={'pointer'} position={"absolute"} right={0} opacity={0.7} p="15px" width={'50px'} h="50px" bg="red" borderRadius={'10px'}  >
-                            <Icon as={IoLogOutOutline} color={'white'} w="20px" h="20px" />
-                        </Box>
+                       
                     </Flex>
                 </Box>
             </SimpleGrid>
