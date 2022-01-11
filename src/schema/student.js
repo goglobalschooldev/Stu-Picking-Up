@@ -19,3 +19,18 @@ export const STU_SUBCRIPTION = gql`
     }
     }
 `
+
+export const GET_STUDENTPICKUP = gql`
+query GetStudentPickupBystudentIdClassIdAndDate( $studentId: ID, $date: Date) {
+  getStudentPickupBystudentIdClassIdAndDate( studentId: $studentId, date: $date) {
+    studentId {
+      _id
+    }
+    studentName
+    transportation
+    picked
+    pickingUpAt
+    leftAt
+  }
+}
+`

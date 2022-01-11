@@ -20,6 +20,7 @@ export default function ClassRoom() {
             classId: classid
         },
         onCompleted: ({ getStudentforPickingUP }) => {
+            console.log(getStudentforPickingUP)
             setStudentData(getStudentforPickingUP)
         }
     });
@@ -51,20 +52,7 @@ export default function ClassRoom() {
                 >
                     {
                         studentData && studentData.map(stu =>
-                            // <Student
-                            //     key={stu._id}
-                            //     stuID={stu._id}
-                            //     stuName={stu.englishName}
-                            //     transportation={stu.transportation}
-                            //     profile={stu.profileImg}
-                            // />
-                            <Student data={stu}
-                                // stuName={`${stu?.lastName} ${stu?.firstName}`}
-                                // transportation={stu.transportation}
-                                // profile={stu.profileImg}
-                                key={stu._id}
-                                // stuID={stu._id}
-                            />
+                            <Student data={stu} classId={classid} key={stu._id} />
                         )
                     }
                     {/* <Student

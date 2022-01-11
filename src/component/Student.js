@@ -1,26 +1,36 @@
 import { Box, Center, Image, Icon, Flex, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { ImWarning } from 'react-icons/im'
-import { useSubscription } from '@apollo/client';
-import { STU_SUBCRIPTION } from '../schema/student';
+import { useSubscription,useQuery } from '@apollo/client';
+import { GET_STUDENTPICKUP, STU_SUBCRIPTION } from '../schema/student';
 
-export default function Student({ data }) {
-    const [isOpen, setIsOpen] = React.useState(false)
+export default function Student({ data,classId }) {
+    const [isOpen, setIsOpen] = useState(false)
     const [leave, setLeave] = useState(false)
     const onClose = () => setIsOpen(false)
     const onLeave = () => {
         setIsOpen(false)
         setLeave(true)
     }
-    const cancelRef = React.useRef()
+    const cancelRef = useRef()
 
     const { data:d, loading } = useSubscription(
         STU_SUBCRIPTION,
         { variables: { studentId: data?._id } }
     );
 
+    // const {data:pickData,loading:pickup} = useQuery(GET_STUDENTPICKUP,{
+    //     variables:{
+    //         studentId:data?._id,
+    //         date:new Date()
+    //     },
+    //     onCompleted:({getStudentPickupBystudentIdClassIdAndDate})=>{
+    //         // console.log(getStudentPickupBystudentIdClassIdAndDate)
+    //     }
+    // })
 
+    // console.log(pickData)
 
     const activeUser = <Center>
         <Box
