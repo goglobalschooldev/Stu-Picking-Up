@@ -8,17 +8,22 @@ import { GET_SECTIONSHIFT_BY_TEACHER_ID } from '../schema/sectionshift';
 
 export default function SectionShift() {
 
-    const [sectionShiftData,setSectionShiftData] = useState([])
+    const [sectionShiftData, setSectionShiftData] = useState([])
+    let user = JSON.parse(localStorage.getItem("user_logged"))
+
+    // console.log(user)
 
     const { loading, error, data } = useQuery(GET_SECTIONSHIFT_BY_TEACHER_ID, {
         variables: {
-            personalInfoId: "61cc0d748d045a907b5885d7",
+            personalInfoId: user?.teacherId?._id,
         },
-        onCompleted:({getSectionShiftByTeacherId})=>{
-            setSectionShiftData(getSectionShiftByTeacherId)
+        onCompleted: ({ getSectionShiftByTeacherId }) => {
+            // console.log(getSectionShiftByTeacherId)
+            setSectionShiftData(getSectionShiftByTeacherId);
+         
         }
     });
-
+    
     return (
         <Box>
             <SectionShiftHeader />
@@ -33,69 +38,18 @@ export default function SectionShift() {
                         "2xl": "70%"
                     }}
 
-                    columns={[2, 2, 3, 4, 4, 4]}
+                    columns={[1, 2, 2, 3, 3, 4]}
                     spacing='20px'
                     mt="20px"
                 >
-                    {/* {
-                       data &&
-                       data.getStudentforPickingUP.map(stu =>
-                           <Student
-                               key={stu._id}
-                               stuID={stu._id}
-                               stuName={stu.englishName}
-                               transportation={stu.transportation}
-                               profile={stu.profileImg}
-                           />
-                       )
-                   } */}
 
-                    {/* <ClassCard data={e} index={index} /> */}
                     {
-                        sectionShiftData?.map((e,index)=>{
-                            console.log(e)
+                        sectionShiftData?.map((e, index) => {
                             return (
                                 <SectionShiftCard key={e?._id} data={e} index={index} />
                             )
                         })
                     }
-
-                    {/* <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    /> */}
 
                 </SimpleGrid>
 

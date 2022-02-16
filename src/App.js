@@ -16,25 +16,28 @@ function App() {
 
   const { data } = useQuery(IS_LOGGED_IN);
   const login = !!data?.isLoggedIn
- 
+
   return (
     <ChakraProvider theme={theme, colortheme}>
+      
       <Router>
         {login ? <>
+
             <Switch>
               <Route exact path="/">
                 <SectionShift />
               </Route>
-              <Route path="/classroom/:classid&:academicid">
+              <Route path="/classroom/:classid&:academicid&:sectionshift">
                 {/* <Login /> */}
                 <ClassRoom />
               </Route>
             </Switch>
-          </>
-          :
+          
+        </>
+          : 
           <>
             <Switch>
-              <Route exact path="/">
+              <Route >
                 <Login />
               </Route>
             </Switch>

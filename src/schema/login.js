@@ -16,7 +16,13 @@ mutation loginUser($email: String!, $password: String!) {
       email
       lastName
       firstName
-      role
+      role{
+        privillege{
+          privillegeName
+          permitted
+          privillegeType
+        }
+      }
       pages {
         page
       }

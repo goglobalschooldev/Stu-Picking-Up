@@ -1,5 +1,5 @@
 import { Box, Center, SimpleGrid, Image, Icon } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ClassromHeader from '../component/ClassromHeader'
 import Student from '../component/Student'
 import { useQuery } from "@apollo/client";
@@ -7,12 +7,18 @@ import { GET_STUDENTS } from '../schema/student';
 import brandlogo from '.././images/brandlogo.png'
 import { IoLogOutOutline } from 'react-icons/io5'
 import { useParams } from 'react-router-dom';
+import { GET_SECTIONSHIFT_BY_ID } from '../schema/sectionshift';
+import useSound from "use-sound";
+import AlertSound from '../assets/sound/alert.mp3'
 
 export default function ClassRoom() {
+    const [play] = useSound(AlertSound, {playbackRate:1, interrupt: true });
+    const [isPicking,setIsPicking] = useState(0)
 
-    const { classid, academicid } = useParams()
+    const { classid, academicid,sectionshift } = useParams()
 
     const [studentData, setStudentData] = useState([])
+    const [classData,setClassData] = useState(null)
 
     const { loading, error, data } = useQuery(GET_STUDENTS, {
         variables: {
@@ -20,77 +26,60 @@ export default function ClassRoom() {
             classId: classid
         },
         onCompleted: ({ getStudentforPickingUP }) => {
-            console.log(getStudentforPickingUP)
             setStudentData(getStudentforPickingUP)
         }
     });
 
-    console.log(data)
+    const { loading:sectionLoading, data:section } = useQuery(GET_SECTIONSHIFT_BY_ID, {
+        variables: {
+            sectionShiftId: sectionshift,
+        },
+        onCompleted: ({ getSectionShiftById }) => {
+            setClassData(getSectionShiftById)
+        }
+    });
+
+    // useEffect(() => {
+    //     if(isPicking > 0){
+    //         play()
+    //     }
+    // }, [isPicking])
 
     // if (loading) return <p>Loading...</p>;
     // if (error) return <p>Error :(</p>;
 
     return (
-        <Box>
+        <Box className={ isPicking > 0 ? 'alert-pickup-bg':''}>
             <ClassromHeader />
             <Center>
-
-
+           
                 <SimpleGrid
                     w={{
                         base: "90%",
                         sm: "90%",
-                        md: "99%",
-                        lg: "99%",
-                        xl: "90%",
+                        md: "95%",
+                        lg: "97%",
+                        xl: "96%",
                         "2xl": "95%"
                     }}
 
                     columns={[2, 2, 4, 5, 6, 7]}
                     spacing='20px'
                     mt="20px"
+                    mb={100}
                 >
                     {
                         studentData && studentData.map(stu =>
-                            <Student data={stu} classId={classid} key={stu._id} />
+
+                            <Student
+                                data={stu}
+                                key={stu._id}
+                                setIsPicking={setIsPicking}
+                                isPicking={isPicking}
+                            />
                         )
                     }
-                    {/* <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    />
-                    <Student
-                        stuName={'Dy Dyka'}
-                        transportation={"BUS"}
-                    /> */}
+
 
                 </SimpleGrid>
 

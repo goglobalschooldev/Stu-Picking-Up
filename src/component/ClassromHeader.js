@@ -1,21 +1,22 @@
-import React from 'react'
-import { Box, Center, Flex, Icon, SimpleGrid } from '@chakra-ui/react'
-import { SiGoogleclassroom } from 'react-icons/si'
-import { ImSun } from 'react-icons/im'
-import { HiOutlineUserGroup } from 'react-icons/hi'
+import React from 'react';
+import { Box, Center, Flex, Icon, SimpleGrid } from '@chakra-ui/react';
+import { SiGoogleclassroom } from 'react-icons/si';
+import { ImSun } from 'react-icons/im';
+import { HiOutlineUserGroup } from 'react-icons/hi';
 import { FaFemale, FaUsersSlash } from 'react-icons/fa';
-import { GiTeacher } from 'react-icons/gi'
-import { IoLogOutOutline } from 'react-icons/io5'
+import { GiTeacher } from 'react-icons/gi';
+
 export default function ClassromHeader() {
+
     return (
         <Center>
             <SimpleGrid
                 w={{
                     base: "90%",
                     sm: "90%",
-                    md: "99%",
-                    lg: "99%",
-                    xl: "90%",
+                    md: "95%",
+                    lg: "97%",
+                    xl: "96%",
                     "2xl": "95%"
                 }}
 
@@ -184,9 +185,7 @@ export default function ClassromHeader() {
                             <Box fontSize={"12px"} fontWeight={'semibold'}  >Absent</Box>
 
                         </Box>
-                        <Box cursor={'pointer'} position={"absolute"} right={0} opacity={0.7} p="15px" width={'50px'} h="50px" bg="red" borderRadius={'10px'}  >
-                            <Icon as={IoLogOutOutline} color={'white'} w="20px" h="20px" />
-                        </Box>
+
                     </Flex>
                 </Box>
             </SimpleGrid>

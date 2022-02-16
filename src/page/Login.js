@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Center, Image, FormControl, FormLabel, Input, VStack, Button, Flex, InputRightElement } from '@chakra-ui/react';
+import { Box, Center, Image, FormControl, FormLabel, Input, VStack, Button, Flex, InputRightElement, useToast } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons'
 import officail_logo from '../images/officail_logo.png';
 import { IS_LOGGED_IN, LOGIN_USER } from '../schema/login';
@@ -7,46 +7,53 @@ import { useMutation } from '@apollo/client';
 import { cache } from '../function/fn';
 
 export default function Login() {
-
+    let toast = useToast()
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [show, setShow] = useState(false)
     const handleClick = () => setShow(!show)
 
-    const [loginUser,{loading,error} ]= useMutation(LOGIN_USER,{
-        onCompleted:({loginUser})=>{
-            if(loginUser){
+    const [loginUser, { loading, error }] = useMutation(LOGIN_USER, {
+        onCompleted: ({ loginUser }) => {
+            if (loginUser) {
 
-                localStorage.setItem("user_logged",JSON.stringify(loginUser.user))
-                localStorage.setItem("access_token",JSON.stringify(loginUser.token))
-                localStorage.setItem("refresh_token",JSON.stringify(loginUser.refreshToken)) 
-
-                // client.resetStore()
+                localStorage.setItem("user_logged", JSON.stringify(loginUser.user))
+                localStorage.setItem("access_token", JSON.stringify(loginUser.token))
+                localStorage.setItem("refresh_token", JSON.stringify(loginUser.refreshToken))
 
                 cache.writeQuery({
                     query: IS_LOGGED_IN,
                     data: {
                         isLoggedIn: loginUser.token,
                     },
-                    
+
                 });
 
-                // form.resetFields()
-                // openSuccessNotification({title:t("notification_success"),message:'Login success'})
-            }else{
-                // openErrorNotification({title:t("notification_error"),message:loginUser.message})
+                toast({
+                    description: "Login Success!",
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                })
+            } else {
+                // console.log(loginUser.message)
             }
         },
-        onError:(error)=>{
-            // openErrorNotification({title:t("notification_error"),message:error.message})
+        onError: (error) => {
+            toast({
+                description: error.message,
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
         }
     })
 
     const onLogin = () => {
         loginUser({
-            variables:{
-                email:email,
-                password:password
+            variables: {
+                email: email,
+                password: password
             }
         })
     }

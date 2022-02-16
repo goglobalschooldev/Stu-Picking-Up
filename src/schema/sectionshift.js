@@ -64,3 +64,31 @@ getSectionShiftByTeacherId(personalInfoId: $personalInfoId) {
   }
 }
 `
+
+export const GET_SECTIONSHIFT_BY_ID = gql`
+query GetSectionShiftById($sectionShiftId: ID!) {
+  getSectionShiftById(sectionShiftId: $sectionShiftId) {
+    _id
+    sectionShiftName
+    schoolId {
+      _id
+    _id
+      schoolName
+    }
+    academicYearId {
+      _id
+      academicYear
+      status
+    }
+    shiftId {
+      _id
+      shiftName
+    }
+    programId {
+      _id
+      programmName
+    }
+    
+  }
+}
+`

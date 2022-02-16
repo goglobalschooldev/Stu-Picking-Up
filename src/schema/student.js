@@ -21,8 +21,9 @@ export const STU_SUBCRIPTION = gql`
 `
 
 export const GET_STUDENTPICKUP = gql`
-query GetStudentPickupBystudentIdClassIdAndDate( $studentId: ID, $date: Date) {
+query getStudentPickupBystudentIdClassIdAndDate( $studentId: ID, $date: Date) {
   getStudentPickupBystudentIdClassIdAndDate( studentId: $studentId, date: $date) {
+    id
     studentId {
       _id
     }
@@ -31,6 +32,24 @@ query GetStudentPickupBystudentIdClassIdAndDate( $studentId: ID, $date: Date) {
     picked
     pickingUpAt
     leftAt
+    createdAt
+    shift {
+      _id
+      shiftName
+    }
+    academicYearId {
+      _id
+      academicYear
+    }
+  }
+}
+`
+
+export const UPDATE_STUDENTPICKUP = gql`
+mutation UpdatePickingUp($newPickingUp: PickingUpInput, $pickingUpId: ID) {
+  updatePickingUp(newPickingUp: $newPickingUp, pickingUpId: $pickingUpId) {
+    success
+    message
   }
 }
 `

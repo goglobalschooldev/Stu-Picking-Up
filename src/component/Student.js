@@ -1,36 +1,121 @@
 import { Box, Center, Image, Icon, Flex, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
-import { AiOutlineClockCircle } from 'react-icons/ai';
+import React, { useEffect, useRef, useState } from 'react';
+import { AiOutlineClockCircle, } from 'react-icons/ai';
+import { RiMotorbikeFill } from 'react-icons/ri'
 import { ImWarning } from 'react-icons/im'
-import { useSubscription,useQuery } from '@apollo/client';
-import { GET_STUDENTPICKUP, STU_SUBCRIPTION } from '../schema/student';
+import { useSubscription, useQuery, useLazyQuery, useMutation } from '@apollo/client';
+import { GET_STUDENTPICKUP, STU_SUBCRIPTION, UPDATE_STUDENTPICKUP } from '../schema/student';
+import moment from 'moment';
+import useSound from "use-sound";
+import AlertSound from '../assets/sound/alert.mp3'
+import { FcImageFile } from 'react-icons/fc'
 
-export default function Student({ data,classId }) {
+export default function Student({ data, classId, setIsPicking, isPicking }) {
+
+    // console.log(data)
+    const [play] = useSound(AlertSound, { playbackRate: 1, interrupt: true })
+
     const [isOpen, setIsOpen] = useState(false)
-    const [leave, setLeave] = useState(false)
+    // const [leave, setLeave] = useState(false)
+    const [studentData, setStudentData] = useState(null)
+
+    const [studentPick, setStudentPick] = useState(null)
+
+    const [isUpdated, setIsUpdated] = useState(false)
+
     const onClose = () => setIsOpen(false)
-    const onLeave = () => {
-        setIsOpen(false)
-        setLeave(true)
-    }
+
     const cancelRef = useRef()
 
-    const { data:d, loading } = useSubscription(
+    const [getStudentPickupBystudentIdClassIdAndDate, { loading, data: pickup, refetch }] = useLazyQuery(GET_STUDENTPICKUP, {
+        onCompleted: ({ getStudentPickupBystudentIdClassIdAndDate }) => {
+            if (getStudentPickupBystudentIdClassIdAndDate) {
+                setStudentPick(getStudentPickupBystudentIdClassIdAndDate)
+            }
+            if (getStudentPickupBystudentIdClassIdAndDate?.picked && (getStudentPickupBystudentIdClassIdAndDate?.leftAt === null || getStudentPickupBystudentIdClassIdAndDate?.leftAt === undefined)) {
+                let sum = isPicking + 1;
+                setIsPicking(sum)
+            }
+        },
+        fetchPolicy: 'cache-and-network'
+    });
+
+    useEffect(() => {
+        if (data) {
+            setStudentData(data)
+        }
+    }, [data])
+
+    useEffect(() => {
+        if (studentPick) {
+            // play()
+            setStudentData({ ...studentData, ...studentPick, transportation: studentData?.transportation })
+            setStudentPick(null)
+        }
+    }, [studentPick])
+
+    const { data: dataSub, loading: loadingSub } = useSubscription(
         STU_SUBCRIPTION,
-        { variables: { studentId: data?._id } }
+        {
+            variables: { studentId: data?._id },
+            onSubscriptionComplete: ({ pickingUpFilter }) => {
+                if (pickingUpFilter) {
+                    refetch()
+                    setIsUpdated(true)
+                    setIsPicking(false)
+                }
+            }
+        }
     );
 
-    // const {data:pickData,loading:pickup} = useQuery(GET_STUDENTPICKUP,{
-    //     variables:{
-    //         studentId:data?._id,
-    //         date:new Date()
-    //     },
-    //     onCompleted:({getStudentPickupBystudentIdClassIdAndDate})=>{
-    //         // console.log(getStudentPickupBystudentIdClassIdAndDate)
-    //     }
-    // })
+    useEffect(() => {
+        getStudentPickupBystudentIdClassIdAndDate({
+            variables: {
+                studentId: data?._id,
+                date: new Date()
+            }
+        })
+        setIsUpdated(false)
+    }, [isUpdated, dataSub])
 
-    // console.log(pickData)
+    const [updatePickingUp, { loading: loadingUpdate }] = useMutation(UPDATE_STUDENTPICKUP, {
+        onCompleted: ({ updatePickingUp }) => {
+            if (updatePickingUp?.success === true) {
+                // setIsOpen(false)
+                // setIsUpdated(true)
+            } else {
+                console.log(updatePickingUp?.message)
+            }
+        }
+    })
+
+    const onLeave = () => {
+        const newPickingUp = {
+            studentId: studentData?._id,
+            studentName: studentData?.englishName,
+            transportation: studentData?.transportation,
+            picked: studentData?.picked,
+            pickingUpAt: studentData?.pickingUpAt,
+            leftAt: moment(new Date()),
+            academicYearId: studentData?.academicYearId?._id,
+            shift: studentData?.shift?._id
+        }
+        updatePickingUp({
+            variables: {
+                newPickingUp: newPickingUp,
+                pickingUpId: studentData?.id
+            }, update(_, result) {
+                refetch()
+                setIsOpen(false)
+                setIsUpdated(true)
+
+                let sum = isPicking - 1;
+                setIsPicking(sum)
+            }
+        })
+    }
+
+    // console.log(studentData)
 
     const activeUser = <Center>
         <Box
@@ -50,10 +135,10 @@ export default function Student({ data,classId }) {
             </Center>
         </Box>
     </Center>
-    
+
     const PickingUpUser = <Center>
         <Box
-
+            mt="20px"
             p="5px"
             bg="red"
             fontSize={"12px"}
@@ -63,7 +148,7 @@ export default function Student({ data,classId }) {
         >
             <Center>
                 <Flex>
-                    <Icon as={AiOutlineClockCircle} mt="3px" />
+                    <Icon as={RiMotorbikeFill} mt="3px" />
                     <Box ml='4px'>Picking-Up</Box>
                 </Flex>
             </Center>
@@ -90,7 +175,7 @@ export default function Student({ data,classId }) {
     return (
         <Box
             w={{
-                bass:"0%",
+                bass: "0%",
                 sm: "0%",
                 md: "190px",
                 lg: "190px",
@@ -102,23 +187,28 @@ export default function Student({ data,classId }) {
             mt="10px"
             borderRadius={'10px'}
             className={
-                d &&
-                    d.pickingUpFilter.picked ? 'stu-boder' : ''
+                studentData?.picked && studentData?.leftAt === null ? 'stu-boder' : 'default-studend-card'
             }
             cursor={"pointer"}
             onClick={() => setIsOpen(true)}
         >
             <Box>
                 <Center>
-                    <Image
-                        objectFit={'cover'}
-                        borderRadius='full'
-                        boxSize='95px'
-                        mt={"25px"}
-                        src={`${process.env.React_App_UPLOAD_URL}${data?.profileImg}`}
-                        // src={st}
-                        alt='Dan Abramov'
-                    />
+                    {
+                        studentData?.profileImg ?
+
+                            <Image
+                                objectFit={'cover'}
+                                borderRadius='full'
+                                boxSize='95px'
+                                mt={"25px"}
+                                src={`${process.env.React_App_UPLOAD_URL}${studentData?.profileImg}`}
+                            // src={st}
+                            // alt='Dan Abramov'
+                            />
+                            :
+                            <FcImageFile className='image-student' />
+                    }
                 </Center>
             </Box>
             <Box
@@ -126,8 +216,8 @@ export default function Student({ data,classId }) {
                 fontWeight={"semibold"}
                 mt="20px"
             >
-                {/* {data?.lastName} {data?.firstName} */}
-                {data?.englishName}
+                {/* {studentData?.lastName} {studentData?.firstName} */}
+                {studentData?.englishName?.split(' ')[1]}
             </Box>
             <Box
                 textAlign={"center"}
@@ -141,15 +231,16 @@ export default function Student({ data,classId }) {
                 fontSize={"15px"}
                 fontWeight={"semibold"}
             >
-                {data?.transportation}
+                {studentData?.transportation ? studentData?.transportation : 'Not set'}
             </Box>
             {
-                // data &&
-                //     data.pickingUpFilter.picked ? PickingUpUser :
-                //     activeUser
-                // PickingUpUser
-                // leaveUser
-                leave ? leaveUser : activeUser
+                !studentData?.picked ? activeUser : null
+            }
+            {
+                studentData?.picked && studentData?.leftAt === null ? PickingUpUser : null
+            }
+            {
+                studentData?.leftAt !== null && studentData?.leftAt !== undefined ? leaveUser : null
             }
             <AlertDialog
                 isOpen={isOpen}
