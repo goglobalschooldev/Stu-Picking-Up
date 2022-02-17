@@ -8,6 +8,8 @@ import { GiTeacher } from 'react-icons/gi';
 
 export default function ClassromHeader() {
 
+    const data = JSON.parse(localStorage.getItem('user_logged'))
+
     return (
         <Center>
             <SimpleGrid
@@ -98,8 +100,7 @@ export default function ClassromHeader() {
                         </Box>
                         <Box ml='20px'>
                             <Box fontSize={"20px"} fontWeight={'light'} mt="2px" >
-                                Tok Kana
-
+                                {data.lastName} {data.firstName}
                             </Box>
                             <Box fontSize={"12px"} fontWeight={'semibold'}  >Teacher</Box>
                         </Box>

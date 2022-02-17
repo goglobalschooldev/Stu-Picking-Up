@@ -2,6 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@apollo/client": "^3.4.16",
     "@chakra-ui/icons": "^1.1.1",

@@ -3,7 +3,7 @@ import { theme, colortheme } from './theme'
 import './App.css';
 import Login from './page/Login';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
@@ -28,7 +28,6 @@ function App() {
                 <SectionShift />
               </Route>
               <Route path="/classroom/:classid&:academicid&:sectionshift">
-                {/* <Login /> */}
                 <ClassRoom />
               </Route>
             </Switch>
