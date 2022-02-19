@@ -10,7 +10,7 @@ import useSound from "use-sound";
 import AlertSound from '../assets/sound/alert.mp3'
 import { FcImageFile } from 'react-icons/fc'
 
-export default function Student({ data, classId, setIsPicking, isPicking }) {
+export default function Student({ data, classId, setIsPicking, isPicking,academicYearId }) {
 
     // console.log(data)
     const [play] = useSound(AlertSound, { playbackRate: 1, interrupt: true })
@@ -29,10 +29,14 @@ export default function Student({ data, classId, setIsPicking, isPicking }) {
 
     const [getStudentPickupBystudentIdClassIdAndDate, { loading, data: pickup, refetch }] = useLazyQuery(GET_STUDENTPICKUP, {
         onCompleted: ({ getStudentPickupBystudentIdClassIdAndDate }) => {
+            console.log(getStudentPickupBystudentIdClassIdAndDate,'sdfadsff')
             if (getStudentPickupBystudentIdClassIdAndDate) {
                 setStudentPick(getStudentPickupBystudentIdClassIdAndDate)
             }
-            if (getStudentPickupBystudentIdClassIdAndDate?.picked && (getStudentPickupBystudentIdClassIdAndDate?.leftAt === null || getStudentPickupBystudentIdClassIdAndDate?.leftAt === undefined)) {
+            if (getStudentPickupBystudentIdClassIdAndDate?.picked && 
+                (getStudentPickupBystudentIdClassIdAndDate?.leftAt === null || getStudentPickupBystudentIdClassIdAndDate?.leftAt === undefined)
+                // (getStudentPickupBystudentIdClassIdAndDate?.classId?._id === null || getStudentPickupBystudentIdClassIdAndDate?.classId?._id === undefined)
+            ) {
                 let sum = isPicking + 1;
                 setIsPicking(sum)
             }
@@ -51,6 +55,7 @@ export default function Student({ data, classId, setIsPicking, isPicking }) {
             // play()
             setStudentData({ ...studentData, ...studentPick, transportation: studentData?.transportation })
             setStudentPick(null)
+            console.log({ ...studentData, ...studentPick, transportation: studentData?.transportation })
         }
     }, [studentPick])
 
@@ -72,7 +77,8 @@ export default function Student({ data, classId, setIsPicking, isPicking }) {
         getStudentPickupBystudentIdClassIdAndDate({
             variables: {
                 studentId: data?._id,
-                date: new Date()
+                date: new Date(),
+                classId: classId
             }
         })
         setIsUpdated(false)
@@ -97,8 +103,9 @@ export default function Student({ data, classId, setIsPicking, isPicking }) {
             picked: studentData?.picked,
             pickingUpAt: studentData?.pickingUpAt,
             leftAt: moment(new Date()),
-            academicYearId: studentData?.academicYearId?._id,
-            shift: studentData?.shift?._id
+            // academicYearId: studentData?.academicYearId?._id,
+            shift: studentData?.shift?._id,
+            classId:classId,
         }
         updatePickingUp({
             variables: {
@@ -240,7 +247,7 @@ export default function Student({ data, classId, setIsPicking, isPicking }) {
                 studentData?.picked && studentData?.leftAt === null ? PickingUpUser : null
             }
             {
-                studentData?.leftAt !== null && studentData?.leftAt !== undefined ? leaveUser : null
+                studentData?.leftAt !== null && studentData?.leftAt !== undefined && studentData?.classId?._id===classId  ? leaveUser : null
             }
             <AlertDialog
                 isOpen={isOpen}

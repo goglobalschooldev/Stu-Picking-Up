@@ -76,6 +76,8 @@ export default function ClassRoom() {
                                 key={stu._id}
                                 setIsPicking={setIsPicking}
                                 isPicking={isPicking}
+                                classId={classid}
+                                academicYearId={academicid}
                             />
                         )
                     }

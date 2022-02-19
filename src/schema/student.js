@@ -21,8 +21,8 @@ export const STU_SUBCRIPTION = gql`
 `
 
 export const GET_STUDENTPICKUP = gql`
-query getStudentPickupBystudentIdClassIdAndDate( $studentId: ID, $date: Date) {
-  getStudentPickupBystudentIdClassIdAndDate( studentId: $studentId, date: $date) {
+query getStudentPickupBystudentIdClassIdAndDate( $studentId: ID, $date: Date,$classId: ID) {
+  getStudentPickupBystudentIdClassIdAndDate( studentId: $studentId, date: $date,classId: $classId) {
     id
     studentId {
       _id
@@ -33,6 +33,9 @@ query getStudentPickupBystudentIdClassIdAndDate( $studentId: ID, $date: Date) {
     pickingUpAt
     leftAt
     createdAt
+    classId{
+      _id
+    }
     shift {
       _id
       shiftName
