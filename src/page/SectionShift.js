@@ -11,8 +11,6 @@ export default function SectionShift() {
     const [sectionShiftData, setSectionShiftData] = useState([])
     let user = JSON.parse(localStorage.getItem("user_logged"))
 
-    // console.log(user)
-
     const { loading, error, data } = useQuery(GET_SECTIONSHIFT_BY_TEACHER_ID, {
         variables: {
             personalInfoId: user?.teacherId?._id,

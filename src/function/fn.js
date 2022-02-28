@@ -34,3 +34,34 @@ export function randomColor(index){
 
     return colors[index]
 }
+
+export function joinTwoArray(array1, array2, array3) {
+
+    let x = array1
+    let y = array2
+
+    let r = []
+    x?.map(record => {
+
+        if (y?.map(e => e.studentId).includes(record.studentId)) {
+            record = { ...record, ...y.filter(e => e.studentId === record.studentId)[0] }
+        }
+
+        // record = {...record}
+        r.push(record)
+    })
+
+    y?.map(record => {
+        if (!r?.map(e => e.studentId).includes(record.studentId) && y?.map(e => e.studentId).includes(record.studentId)) {
+            r.push({ ...record })
+        }
+    })
+
+    return r
+}
+
+export const getUserLoggedID = () => {
+    let data = JSON.parse(localStorage.getItem('user_logged'))
+
+    return data?.id || null
+}

@@ -49,7 +49,6 @@ export default function SectionShiftHeader() {
                 columns={[1, 1, 1, 1, 1, 1]}
                 spacing='20px'
             >
-
                 <Box
                     w={{
                         bass: "0%",

@@ -11,6 +11,7 @@ import ClassRoom from './page/ClassRoom';
 import { useQuery } from '@apollo/client';
 import { IS_LOGGED_IN } from './schema/login';
 import SectionShift from './page/SectionShift';
+import Attendance from "./page/Attendance";
 
 function App() {
 
@@ -19,21 +20,24 @@ function App() {
 
   return (
     <ChakraProvider theme={theme, colortheme}>
-      
+
       <Router>
         {login ? <>
 
-            <Switch>
-              <Route exact path="/">
-                <SectionShift />
-              </Route>
-              <Route path="/classroom/:classid&:academicid&:sectionshift">
-                <ClassRoom />
-              </Route>
-            </Switch>
-          
+          <Switch>
+            <Route exact path="/">
+              <SectionShift />
+            </Route>
+            <Route path="/classroom/:classid&:academicid&:sectionshift">
+              <ClassRoom />
+            </Route>
+            <Route path="/attendance/:classid&:academicid&:sectionshift">
+              <Attendance />
+            </Route>
+          </Switch>
+
         </>
-          : 
+          :
           <>
             <Switch>
               <Route >

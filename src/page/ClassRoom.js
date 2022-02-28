@@ -12,13 +12,13 @@ import useSound from "use-sound";
 import AlertSound from '../assets/sound/alert.mp3'
 
 export default function ClassRoom() {
-    const [play] = useSound(AlertSound, {playbackRate:1, interrupt: true });
-    const [isPicking,setIsPicking] = useState(0)
+    const [play] = useSound(AlertSound, { playbackRate: 1, interrupt: true });
+    const [isPicking, setIsPicking] = useState(0)
 
-    const { classid, academicid,sectionshift } = useParams()
+    const { classid, academicid, sectionshift } = useParams()
 
     const [studentData, setStudentData] = useState([])
-    const [classData,setClassData] = useState(null)
+    const [classData, setClassData] = useState(null)
 
     const { loading, error, data } = useQuery(GET_STUDENTS, {
         variables: {
@@ -30,7 +30,7 @@ export default function ClassRoom() {
         }
     });
 
-    const { loading:sectionLoading, data:section } = useQuery(GET_SECTIONSHIFT_BY_ID, {
+    const { loading: sectionLoading, data: section } = useQuery(GET_SECTIONSHIFT_BY_ID, {
         variables: {
             sectionShiftId: sectionshift,
         },
@@ -49,10 +49,10 @@ export default function ClassRoom() {
     // if (error) return <p>Error :(</p>;
 
     return (
-        <Box className={ isPicking > 0 ? 'alert-pickup-bg':''}>
-            <ClassromHeader />
+        <Box className={isPicking > 0 ? 'alert-pickup-bg' : ''}>
+            <ClassromHeader data={classData} />
             <Center>
-           
+
                 <SimpleGrid
                     w={{
                         base: "90%",
@@ -81,8 +81,6 @@ export default function ClassRoom() {
                             />
                         )
                     }
-
-
                 </SimpleGrid>
 
             </Center>
