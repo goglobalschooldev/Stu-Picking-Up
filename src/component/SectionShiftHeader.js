@@ -70,7 +70,7 @@ export default function SectionShiftHeader() {
                         </Box>
                         <Box ml='20px'>
                             <Box fontSize={"20px"} fontWeight={'light'} mt="2px" >
-                                {data?.lastName} {data?.firstName}
+                                {data?.firstName}
                             </Box>
                             <Box fontSize={"12px"} fontWeight={'semibold'}  >Teacher</Box>
                         </Box>

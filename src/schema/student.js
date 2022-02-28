@@ -56,3 +56,11 @@ mutation UpdatePickingUp($newPickingUp: PickingUpInput, $pickingUpId: ID) {
   }
 }
 `
+export const CREATE_PICKUP = gql`
+mutation createPickingUp($newPickingUp: PickingUpInput) {
+    createPickingUp(newPickingUp: $newPickingUp) {
+        message
+        success
+    }
+}
+`
