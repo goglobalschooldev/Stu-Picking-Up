@@ -33,12 +33,12 @@ export default function Student({ data, classId, setIsPicking, isPicking, academ
             if (getStudentPickupBystudentIdClassIdAndDate) {
                 setStudentPick(getStudentPickupBystudentIdClassIdAndDate)
             }
-            // if (getStudentPickupBystudentIdClassIdAndDate?.picked &&
-            //     (getStudentPickupBystudentIdClassIdAndDate?.leftAt === null || getStudentPickupBystudentIdClassIdAndDate?.leftAt === undefined)
-            // ) {
-            //     let sum = isPicking + 1;
-            //     setIsPicking(sum)
-            // }
+            if (getStudentPickupBystudentIdClassIdAndDate?.picked &&
+                (getStudentPickupBystudentIdClassIdAndDate?.leftAt === null || getStudentPickupBystudentIdClassIdAndDate?.leftAt === undefined)
+            ) {
+                let sum = isPicking + 1;
+                setIsPicking(sum)
+            }
         },
         fetchPolicy: 'cache-and-network'
     });
@@ -129,8 +129,8 @@ export default function Student({ data, classId, setIsPicking, isPicking, academ
                     setIsOpen(false)
                     setIsUpdated(true)
 
-                    // let sum = isPicking - 1;
-                    // setIsPicking(sum)
+                    let sum = isPicking - 1;
+                    setIsPicking(sum)
                 }
             })
             return
