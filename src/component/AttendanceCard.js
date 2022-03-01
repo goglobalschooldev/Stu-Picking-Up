@@ -147,7 +147,8 @@ export default function AttendanceCard({ data, classId, academicYearId,handleUpd
                 fontWeight="semibold"
                 mt="20px"
             >
-                {data?.englishName}
+                {/* {data?.englishName} */}
+                {data?.englishName?.split(' ')[1]}
             </Box>
             <Box justifyContent="center" display="flex" mt={4}>
                 <Button color="#fff" bgColor={statusColor}>

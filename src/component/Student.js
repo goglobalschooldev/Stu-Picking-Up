@@ -1,4 +1,4 @@
-import { Box, Center, Image, Icon, Flex, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button } from '@chakra-ui/react';
+import { Box, Center, Image, Icon, Flex, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, Wrap, WrapItem, Avatar } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { AiOutlineClockCircle, } from 'react-icons/ai';
 import { RiMotorbikeFill } from 'react-icons/ri'
@@ -33,13 +33,12 @@ export default function Student({ data, classId, setIsPicking, isPicking, academ
             if (getStudentPickupBystudentIdClassIdAndDate) {
                 setStudentPick(getStudentPickupBystudentIdClassIdAndDate)
             }
-            if (getStudentPickupBystudentIdClassIdAndDate?.picked &&
-                (getStudentPickupBystudentIdClassIdAndDate?.leftAt === null || getStudentPickupBystudentIdClassIdAndDate?.leftAt === undefined)
-                // (getStudentPickupBystudentIdClassIdAndDate?.classId?._id === null || getStudentPickupBystudentIdClassIdAndDate?.classId?._id === undefined)
-            ) {
-                let sum = isPicking + 1;
-                setIsPicking(sum)
-            }
+            // if (getStudentPickupBystudentIdClassIdAndDate?.picked &&
+            //     (getStudentPickupBystudentIdClassIdAndDate?.leftAt === null || getStudentPickupBystudentIdClassIdAndDate?.leftAt === undefined)
+            // ) {
+            //     let sum = isPicking + 1;
+            //     setIsPicking(sum)
+            // }
         },
         fetchPolicy: 'cache-and-network'
     });
@@ -52,7 +51,6 @@ export default function Student({ data, classId, setIsPicking, isPicking, academ
 
     useEffect(() => {
         if (studentPick) {
-            // play()
             setStudentData({ ...studentData, ...studentPick, transportation: studentData?.transportation })
             setStudentPick(null)
             // console.log({ ...studentData, ...studentPick, transportation: studentData?.transportation })
@@ -131,13 +129,13 @@ export default function Student({ data, classId, setIsPicking, isPicking, academ
                     setIsOpen(false)
                     setIsUpdated(true)
 
-                    let sum = isPicking - 1;
-                    setIsPicking(sum)
+                    // let sum = isPicking - 1;
+                    // setIsPicking(sum)
                 }
             })
             return
         }
-        
+
         delete newPickingUp?.pickingUpAt
         createPickingUp({
             variables: {
@@ -235,9 +233,9 @@ export default function Student({ data, classId, setIsPicking, isPicking, academ
             cursor={"pointer"}
             onClick={() => setIsOpen(true)}
         >
-            <Box>
+            <Box mt={"25px"}>
                 <Center>
-                    {
+                    {/* {
                         studentData?.profileImg ?
 
                             <Image
@@ -246,12 +244,16 @@ export default function Student({ data, classId, setIsPicking, isPicking, academ
                                 boxSize='95px'
                                 mt={"25px"}
                                 src={`${process.env.React_App_UPLOAD_URL}${studentData?.profileImg}`}
-                            // src={st}
-                            // alt='Dan Abramov'
+
                             />
                             :
                             <FcImageFile className='image-student' />
-                    }
+                    } */}
+                    <Wrap>
+                        <WrapItem>
+                            <Avatar size='xl' name={data?.englishName} src={`${process.env.React_App_UPLOAD_URL}${data?.profileImg}`} />
+                        </WrapItem>
+                    </Wrap>
                 </Center>
             </Box>
             <Box
