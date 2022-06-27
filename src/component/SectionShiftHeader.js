@@ -72,9 +72,9 @@ export default function SectionShiftHeader() {
                             <Box fontSize={"20px"} fontWeight={'light'} mt="2px" >
                                 {data?.firstName}
                             </Box>
-                            <Box fontSize={"12px"} fontWeight={'semibold'}  >Teacher</Box>
+                            <Box fontSize={"12px"} fontWeight={'semibold'} >Teacher</Box>
                         </Box>
-                        <Box onClick={onOpen} cursor={'pointer'} position={"absolute"} right={0} opacity={0.7} p="15px" width={'50px'} h="50px" bg="red" borderRadius={'10px'}  >
+                        <Box onClick={onOpen} cursor={'pointer'} position={"absolute"} right={0} opacity={0.7} p="15px" width={'50px'} h="50px" bg="red" borderRadius={'10px'}>
                             <Icon as={IoLogOutOutline} color={'white'} w="20px" h="20px" />
                         </Box>
                     </Flex>

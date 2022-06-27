@@ -55,7 +55,7 @@ getSectionShiftByTeacherId(personalInfoId: $personalInfoId) {
         firstName
         lastName
       }
-        subjectName
+        #subjectName
         subjectId {
           _id
           subjectName
@@ -72,23 +72,66 @@ query GetSectionShiftById($sectionShiftId: ID!) {
     sectionShiftName
     schoolId {
       _id
-    _id
       schoolName
     }
     academicYearId {
       _id
       academicYear
-      status
     }
     shiftId {
       _id
       shiftName
     }
+    classroomId {
+      _id
+      classroomName
+    }
     programId {
       _id
       programmName
     }
-    
+    classId {
+      _id
+      className
+      classGroupId {
+        _id
+        classGroupName
+      }
+      gradeId {
+        _id
+        gradeName
+      }
+    }
+    sectionTypeId {
+      _id
+      sectionTypeName
+    }
+    sections {
+      _id
+      subjectId {
+        _id
+        subjectName
+      }
+      leadTeacherId {
+        _id
+        firstName
+        lastName
+      }
+      teacherAssistantId {
+        _id
+        firstName
+        lastName
+      }
+      duration
+      startTime
+      endTime
+      breakTime
+      dayOfWeek
+      classroomId {
+        _id
+        classroomName
+      }
+    }
   }
 }
 `

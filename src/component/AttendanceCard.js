@@ -24,91 +24,90 @@ import { ImWarning } from 'react-icons/im'
 import { useSubscription, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import moment from 'moment';
 
-export default function AttendanceCard({ data, classId, academicYearId,handleUpdate }) {
-    // console.log(data)
+export default function AttendanceCard({ data, classId, academicYearId, handleUpdate }) {
+    // console.log("data::", data)
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const [status,setStatus] = useState("PRESENT")
-    const [statusNew,setStatusNew] = useState(false)
-    const [remark,setRemark] = useState(data?.remark)
+    const [status, setStatus] = useState("PRESENT")
+    const [statusNew, setStatusNew] = useState(false)
+    const [remark, setRemark] = useState(data?.remark)
 
-    const [statusIcon,setStatusIcon] = useState(<BsPersonCheck />)
-    const [statusColor,setStatusColor] = useState('green.500')
+    const [statusIcon, setStatusIcon] = useState(<BsPersonCheck />)
+    const [statusColor, setStatusColor] = useState('green.500')
 
     useEffect(() => {
-        if(!statusNew && data?.status){
+        if (!statusNew && data?.status) {
             // console.log(data)
             setRemark(data?.remark)
-            if(data.status === "ABSENT"){
+            if (data.status === "ABSENT") {
                 setStatus("ABSENT")
                 setStatusIcon(<BsPersonX />)
                 setStatusColor('red.500')
-            }else if(data.status === "LATE"){
+            } else if (data.status === "LATE") {
                 setStatus("LATE")
                 setStatusIcon(<RiTimerLine />)
-                setStatusColor('yellow.500')
-            }else if(data.status === "PERMISSION"){
+                setStatusColor('green.500')
+            } else if (data.status === "PERMISSION") {
                 setStatus("PERMISSION")
                 setStatusIcon(<BsPersonDash />)
-                setStatusColor('blue.500')
-            }else {
+                setStatusColor('yellow.500')
+            } else {
                 setStatus("PRESENT")
                 setStatusIcon(<BsPersonCheck />)
-                setStatusColor('green.500')
+                setStatusColor('blue.500')
             }
         }
-    },[data])
+    }, [data])
 
-    const handleSetStatus =(e,remark)=>{
+    const handleSetStatus = (e, remark) => {
 
         let attendance = {
-            studentId:data?.studentId?._id || data?._id,
-            remark:remark,
+            studentId: data?.studentId?._id || data?._id,
+            remark: remark,
         }
 
-        if(e!==status){
+        if (e !== status) {
             setStatus(e)
-        }else{
+        } else {
             setStatus(status)
         }
-        handleUpdate({...attendance,status:e})
+        handleUpdate({ ...attendance, status: e })
 
     }
 
-    const handleSetRemark = (e) =>{
+    const handleSetRemark = (e) => {
         setStatusNew(true)
         setRemark(e)
-        handleSetStatus(status,e)
+        handleSetStatus(status, e)
     }
-
 
     const handlePresent = () => {
         setStatusNew(true)
-        handleSetStatus('PRESENT',remark)
+        handleSetStatus('PRESENT', remark)
         setStatusIcon(<BsPersonCheck />)
-        setStatusColor('green.500')
+        setStatusColor('blue.500')
         onClose()
     }
 
     const handlePermission = () => {
         setStatusNew(true)
-        handleSetStatus('PERMISSION',remark)
+        handleSetStatus('PERMISSION', remark)
         setStatusIcon(<BsPersonDash />)
-        setStatusColor('blue.500')
+        setStatusColor('yellow.500')
         onClose()
     }
 
     const handleLate = () => {
         setStatusNew(true)
-        handleSetStatus('LATE',remark)
+        handleSetStatus('LATE', remark)
         setStatusIcon(<RiTimerLine />)
-        setStatusColor('yellow.500')
+        setStatusColor('green.500')
         onClose()
     }
 
     const handleAbsence = () => {
         setStatusNew(true)
-        handleSetStatus('ABSENT',remark)
+        handleSetStatus('ABSENT', remark)
         setStatusIcon(<BsPersonX />)
         setStatusColor('red.500')
         onClose()
@@ -131,7 +130,7 @@ export default function AttendanceCard({ data, classId, academicYearId,handleUpd
                 boxShadow: 'rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px',
             }}
         >
-            
+
             <Box mt={8}>
                 <Center>
                     <Wrap>
@@ -168,7 +167,7 @@ export default function AttendanceCard({ data, classId, academicYearId,handleUpd
                     <ModalCloseButton />
                     <ModalBody mb={5}>
                         <Stack spacing={3}>
-                            <Input placeholder='Remark' value={remark} size='lg' onChange={(e)=>handleSetRemark(e.target.value)} />
+                            <Input placeholder='Remark' value={remark} size='md' onChange={(e) => handleSetRemark(e.target.value)} />
                         </Stack>
                     </ModalBody>
                     <ModalBody mb={5} justifyContent="center" display="flex">
@@ -183,38 +182,35 @@ export default function AttendanceCard({ data, classId, academicYearId,handleUpd
                                 "2xl": "95%"
                             }}
 
-                            columns={[1, 2, 2, 2, 2, 2]}
+                            columns={[1, 2]}
                             spacing='20px'
                         >
-                            <Button bgColor="green" color="#fff" onClick={handlePresent}>
+                            <Button bgColor="blue.500" color="#fff" onClick={handlePresent}>
                                 <Box mr={1}>
                                     <BsPersonCheck />
                                 </Box>
                                 Present
                             </Button>
-                            <Button bgColor="blue" color="#fff" onClick={handlePermission}>
+                            <Button bgColor="yellow.500" color="#fff" onClick={handlePermission}>
                                 <Box mr={1}>
                                     <BsPersonDash />
                                 </Box>
                                 Permission
                             </Button>
-                            <Button bgColor="orange" color="#fff" onClick={handleLate}>
+                            <Button bgColor="green.500" color="#fff" onClick={handleLate}>
                                 <Box mr={1}>
                                     <RiTimerLine />
                                 </Box>
                                 Late
                             </Button>
-                            <Button bgColor="red" color="#fff" onClick={handleAbsence}>
+                            <Button bgColor="red.500" color="#fff" onClick={handleAbsence}>
                                 <Box mr={1}>
                                     <BsPersonX />
                                 </Box>
                                 Absence
                             </Button>
                         </SimpleGrid>
-
-
                     </ModalBody>
-                    
                 </ModalContent>
             </Modal>
         </Box>

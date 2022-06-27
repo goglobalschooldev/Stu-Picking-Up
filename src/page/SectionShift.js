@@ -16,9 +16,11 @@ export default function SectionShift() {
             personalInfoId: user?.teacherId?._id,
         },
         onCompleted: ({ getSectionShiftByTeacherId }) => {
-            // console.log(getSectionShiftByTeacherId)
+            console.log(getSectionShiftByTeacherId)
             setSectionShiftData(getSectionShiftByTeacherId);
-         
+        },
+        onError:(error)=>{
+            console.log(error.message)
         }
     });
     

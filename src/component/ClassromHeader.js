@@ -25,7 +25,6 @@ export default function ClassromHeader({data:sectionShift}) {
                 columns={[1, 2, 3, 4, 4, 6]}
                 spacing='20px'
             >
-
                 <Box
                     w={{
                         bass: "0%",
@@ -86,8 +85,6 @@ export default function ClassromHeader({data:sectionShift}) {
                         xl: "190px",
                         "2xl": "210px"
                     }}
-
-
                     h="70px"
                     bg={'white'}
                     mt="20px"
@@ -172,21 +169,19 @@ export default function ClassromHeader({data:sectionShift}) {
                         "2xl": "210px"
                     }}
                     h="70px"
-                    bg={'white'}
+                    bg='white'
                     mt="20px"
-                    borderRadius={'10px'}
+                    borderRadius='10px'
                     p="10px"
                 >
-                    <Flex position={'relative'}>
-                        <Box opacity={0.7} p="15px" width={'50px'} h="50px" bg="red" borderRadius={'10px'}>
-                            <Icon as={FaUsersSlash} color={'white'} w="20px" h="20px" />
+                    <Flex position='relative'>
+                        <Box opacity={0.7} p="15px" width='50px' h="50px" bg="red" borderRadius='10px'>
+                            <Icon as={FaUsersSlash} color='white' w="20px" h="20px" />
                         </Box>
                         <Box ml='20px'>
-                            <Box fontSize={"20px"} fontWeight={'light'} mt="2px" >2px</Box>
-                            <Box fontSize={"12px"} fontWeight={'semibold'}  >Absent</Box>
-
+                            <Box fontSize="20px" fontWeight='light' mt="2px">2px</Box>
+                            <Box fontSize="12px" fontWeight='semibold'>Absent</Box>
                         </Box>
-
                     </Flex>
                 </Box>
             </SimpleGrid>

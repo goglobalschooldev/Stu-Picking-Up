@@ -1,4 +1,5 @@
 import { InMemoryCache } from "@apollo/client";
+import moment from "moment"
 
 export const cache = new InMemoryCache()
 
@@ -64,4 +65,76 @@ export const getUserLoggedID = () => {
     let data = JSON.parse(localStorage.getItem('user_logged'))
 
     return data?.id || null
+}
+
+export function getKhmerNumber(number) {
+
+  let numArr = number?.toString()?.split('')
+
+  let numberKh = ['០', '១', '២', '៣', '៤', '៥', '៦', '៧', '៨', '៩']
+  let newArr = []
+
+  for (let i = 0; i < numArr?.length; i++) {
+      //   if(d < 10){
+      //     newArr.push(numberKh[0])
+      //   }
+      newArr.push(numberKh[numArr[i]])
+      //   if(i===numArr.length-1){
+      //     newArr.push(newArr.join(""))
+      //   }
+  }
+  return newArr?.join("")
+}
+
+export const convertToPrintData = (data) => {
+
+    let dataExcel = []
+
+    data?.map(student => {
+        let attendance = ''
+        let day = "day" + student?.day
+
+        let result = {
+            fullName: student?.lastName + ' ' + student?.firstName,
+            englishName: student?.englishName,
+            gender: student?.gender,
+            studentId: student?.studentId,
+            student: student?.student,
+            remark: student?.remark
+        }
+
+        if (student?.absent === 1) {
+            attendance = 'A'
+        } else if (student?.permission === 1) {
+            attendance = 'P'
+        } else if (student?.late === 1) {
+            attendance = 'L'
+        } else {
+            attendance = '1'
+        }
+
+        result[day] = attendance
+
+        dataExcel.push(result)
+    })
+
+    let combined = dataExcel.reduce((a, v) => {
+        if (a[v.student]) {
+            a[v.student] = { ...a[v.student], ...v }
+        } else {
+            a[v.student] = v
+        }
+        return a
+    }, {})
+    return Object.values(combined)
+}
+
+export function getDaysInMonthUTC(month, year) {
+    var date = new Date(Date.UTC(year, month, 1));
+    var days = [];
+    while (date.getUTCMonth() === month) {
+        days.push(moment(new Date(date)).format('DD'));
+        date.setUTCDate(date.getUTCDate() + 1);
+    }
+    return days;
 }

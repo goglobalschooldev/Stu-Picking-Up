@@ -8,8 +8,8 @@ import brandlogo from '.././images/brandlogo.png'
 import { useParams } from 'react-router-dom';
 import { GET_SECTIONSHIFT_BY_ID } from '../schema/sectionshift';
 import moment from 'moment';
-import { getUserLoggedID, joinTwoArray } from '../function/fn';
-import { CREATE_ATTENDANCE, GET_ATTENDANCE_BY_SECTIONSHIFTID, UPDATE_ATTENDANCE_BY_ID } from '../schema/attendance';
+import { getUserLoggedID, joinTwoArray, convertToPrintData } from '../function/fn';
+import { CREATE_ATTENDANCE, GET_ATTENDANCE_BY_SECTIONSHIFTID, UPDATE_ATTENDANCE_BY_ID, GET_STUDENT_ATTENDANCE_BY_MONTH } from '../schema/attendance';
 
 export default function Attendance() {
   const { classid, academicid, sectionshift } = useParams()
@@ -23,11 +23,32 @@ export default function Attendance() {
   let newData = []
   const [studentList, setStudentList] = useState([])
   const [attendanceList, setAttendanceList] = useState(null)
+  const [printData, setPrintData] = useState([]);
+
+  // console.log("printData::", printData)
+
+  const { data: studentAttendance, refetch: refetchByMonth } = useQuery(
+    GET_STUDENT_ATTENDANCE_BY_MONTH,
+    {
+      variables: {
+        month: parseInt(moment(new Date()).format("M")),
+        sectionShiftId: sectionshift,
+        academicYearId: academicid,
+      },
+      onCompleted: ({ getStudentAttendanceByMonth }) => {
+        // console.log("getStudentAttendanceByMonth::", getStudentAttendanceByMonth)
+        setPrintData(convertToPrintData(getStudentAttendanceByMonth));
+      },
+      onError: (error) => {
+        console.log(error.message)
+      },
+      fetchPolicy: 'cache-and-network'
+    }
+  );
 
   const [createAttendance, { loading: createLoading }] = useMutation(CREATE_ATTENDANCE, {
     onCompleted: ({ createAttendance }) => {
       if (createAttendance.success === true) {
-
         setStudentList([])
         toast({
           description: createAttendance.message,
@@ -58,7 +79,6 @@ export default function Attendance() {
     onCompleted: ({ updateAttendance }) => {
       if (updateAttendance.success === true) {
         setStudentList([])
-
         toast({
           description: updateAttendance.message,
           status: 'success',
@@ -84,6 +104,47 @@ export default function Attendance() {
     }
   })
 
+
+
+  const { refetch: studentRefetch } = useQuery(GET_STUDENTS, {
+    variables: {
+      academicYearId: academicid,
+      classId: classid
+    },
+    onCompleted: ({ getStudentforPickingUP }) => {
+      setStudentData(getStudentforPickingUP)
+    },
+    fetchPolicy: 'cache-and-network'
+
+  });
+
+  const { loading: sectionLoading, data: section } = useQuery(GET_SECTIONSHIFT_BY_ID, {
+    variables: {
+      sectionShiftId: sectionshift,
+    },
+    onCompleted: ({ getSectionShiftById }) => {
+      // console.log("first::", getSectionShiftById)
+      setClassData(getSectionShiftById)
+    },
+  });
+
+  const { loading: attendanceLoading, data: attendance,refetch:refetchAttendance } = useQuery(GET_ATTENDANCE_BY_SECTIONSHIFTID, {
+    variables: {
+      startDate: null,
+      endDate: null,
+      sectionShiftId: sectionshift,
+    },
+    onCompleted: ({ getAttendanceByDate }) => {
+      // console.log(getAttendanceByDate)
+      setAttendanceList(getAttendanceByDate)
+    },
+    onError: (error) => {
+      console.log(error.message)
+    },
+    fetchPolicy: 'cache-and-network'
+
+  });
+
   const onFinish = () => {
 
     // if (academicYear === null) {
@@ -91,16 +152,12 @@ export default function Attendance() {
     //   return;
     // }
 
-    // console.log(joinTwoArray(newData, studentList))
-
     const newAttendance = {
       sectionShiftId: sectionshift,
       attendanceDate: moment(),
       academicYearId: academicid,
       students: joinTwoArray(newData, studentList),
       // note: note,
-      
-
     }
 
     if (attendanceList) {
@@ -115,58 +172,33 @@ export default function Attendance() {
         return;
       }
 
+      // console.log("befor update::", newAttendance)
+
       updateAttendance({
         variables: {
-          newAttendance: {...newAttendance},
+          newAttendance: { ...newAttendance },
           attendanceId: attendanceList?._id
+        },
+        update(_, result) {
+          // studentRefetch()
+          refetchAttendance()
+          refetchByMonth()
         }
       })
-
       return
     }
 
     createAttendance({
       variables: {
-        newAttendance: {...newAttendance,createdBy: getUserLoggedID()}
+        newAttendance: { ...newAttendance, createdBy: getUserLoggedID() }
+      },
+      update(_, result) {
+        // studentRefetch()
+          refetchAttendance()
+          refetchByMonth()
       }
     })
-
   }
-
-  const { loading, error, data } = useQuery(GET_STUDENTS, {
-    variables: {
-      academicYearId: academicid,
-      classId: classid
-    },
-    onCompleted: ({ getStudentforPickingUP }) => {
-      setStudentData(getStudentforPickingUP)
-    }
-  });
-
-  const { loading: sectionLoading, data: section } = useQuery(GET_SECTIONSHIFT_BY_ID, {
-    variables: {
-      sectionShiftId: sectionshift,
-    },
-    onCompleted: ({ getSectionShiftById }) => {
-      setClassData(getSectionShiftById)
-    },
-
-  });
-
-  const { loading: attendanceLoading, data: attendance } = useQuery(GET_ATTENDANCE_BY_SECTIONSHIFTID, {
-    variables: {
-      startDate: null,
-      endDate: null,
-      sectionShiftId: sectionshift,
-    },
-    onCompleted: ({ getAttendanceByDate }) => {
-      setAttendanceList(getAttendanceByDate)
-    },
-    onError: (error) => {
-      console.log(error.message)
-    },
-
-  });
 
   const handleUpdate = (e) => {
 
@@ -183,7 +215,6 @@ export default function Attendance() {
     } else {
       setStudentList([...studentList, e])
     }
-
   }
 
   useEffect(() => {
@@ -195,7 +226,12 @@ export default function Attendance() {
 
   return (
     <Box>
-      <AttendanceHeader data={classData} setIsCreate={setIsCreate} />
+      <AttendanceHeader
+        printData={printData}
+        data={classData}
+        setIsCreate={setIsCreate}
+        classId={classid}
+      />
       <Center>
         <SimpleGrid
           w={{
@@ -206,7 +242,6 @@ export default function Attendance() {
             xl: "96%",
             "2xl": "95%"
           }}
-
           columns={[2, 2, 4, 5, 6, 7]}
           spacing='20px'
           mt="20px"

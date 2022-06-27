@@ -1,51 +1,371 @@
 body {
- background-color: #F3F5F7 !important;
+    background-color: #F3F5F7 !important;
 }
 
-.stu-boder{
-    box-shadow: 0px 0px 12px rgb(255,0,0 , 1);
+.stu-boder {
+    box-shadow: 0px 0px 12px rgb(255, 0, 0, 1);
     animation: showPop 1s infinite;
     transition: all .4s ease;
 }
 
 @keyframes showPop {
-    0% {box-shadow: 0px 0px 12px rgb(255,0,0 , 1);}
-    50% {box-shadow: 0px 0px 12px rgb(255,0,0 , 0);}
-    100% {box-shadow: 0px 0px 12px rgb(255,0,0 , 1);}
+    0% {
+        box-shadow: 0px 0px 12px rgb(255, 0, 0, 1);
+    }
+
+    50% {
+        box-shadow: 0px 0px 12px rgb(255, 0, 0, 0);
+    }
+
+    100% {
+        box-shadow: 0px 0px 12px rgb(255, 0, 0, 1);
+    }
 }
 
-.card-sectionshift{
+.card-sectionshift {
     /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px!important; */
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     transition: all .3s ease;
 }
-.card-sectionshift:hover{
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px!important;
+
+.card-sectionshift:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px !important;
 }
 
-.alert-pickup-bg{
-    background-color: rgb(88, 2, 2, 0.3)!important;
+.alert-pickup-bg {
+    background-color: rgb(88, 2, 2, 0.3) !important;
     animation: showBackPop 1.5s infinite;
     transition: all .4s ease;
 }
 
 @keyframes showBackPop {
-    0% {background-color: rgb(88, 2, 2,0.3);}
-    50% {background-color: rgb(88, 2, 2 , 0);}
-    100% {background-color: rgb(88, 2, 2 , 0.3);}
+    0% {
+        background-color: rgb(88, 2, 2, 0.3);
+    }
+
+    50% {
+        background-color: rgb(88, 2, 2, 0);
+    }
+
+    100% {
+        background-color: rgb(88, 2, 2, 0.3);
+    }
 }
 
-.default-studend-card{
+.default-studend-card {
     /* box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; */
     transition: all .3s ease;
 }
-.default-studend-card:hover{
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px!important;
+
+.default-studend-card:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px !important;
 }
-.image-student{
+
+.image-student {
     margin-top: 25px;
-    width:95px;
-    height:95px;
-    border-radius:100px;
+    width: 95px;
+    height: 95px;
+    border-radius: 100px;
     object-fit: cover;
+}
+
+/* attendance */
+.att-logo {
+    width: 100px;
+    margin-bottom: -5px;
+}
+
+.title-attendance {
+    display: flex;
+    width: 100%;
+    padding: 0px 10px 0px 10px;
+    margin-top: -8px;
+}
+
+.left-title-attendance {
+    margin-top: 20px;
+    width: 30%;
+    display: flex;
+    justify-content: left;
+}
+
+.center-title-attendance {
+    width: 70%;
+    display: flex;
+    justify-content: left;
+}
+
+.right-title-attendance {
+    margin-right: 20px;
+    margin-top: 120px;
+    text-align: right;
+}
+
+.letf-title-container {
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.center-title-container {
+    width: 57%;
+    display: flex;
+    justify-content: center;
+}
+
+.top-attendance {
+    font-family: khmerOsMuolLight !important;
+    font-size: 10px;
+    color: #000;
+    /* line-height: 180%; */
+}
+
+.top-attendance-en {
+    font-family: GothicBoldRegular !important;
+    font-size: 10px !important;
+    color: #000;
+    line-height: 180%;
+}
+
+.wingding-con {
+    font-size: 8px;
+    color: #464c9d;
   }
+
+.wingding {
+    font-family: WingDing !important;
+    font-size: 10px !important;
+    color: #000;
+    line-height: 190%;
+}
+
+/* table attendance */
+.attenance-table {
+    margin: 2px 20px 0px 20px;
+}
+
+.attenance-table tr th {
+    border: 1px solid #92cbf9;
+    font-size: 10px;
+    padding-top: 2px;
+    border-collapse: collapse;
+}
+
+.attenance-table td {
+    border: 1px solid #92cbf9;
+    border-collapse: collapse;
+    font-size: 9px;
+}
+
+.attenance-table th {
+    background-color: #deeffd;
+}
+
+.no-item {
+    width: 2%;
+    font-family: khmerOsMuolLight !important;
+    font-weight: 100;
+}
+
+.id-item {
+    width: 4%;
+    font-family: khmerOsMuolLight !important;
+    font-weight: 100;
+}
+
+.name-item {
+    width: 20% !important;
+    font-family: khmerOsMuolLight !important;
+    font-weight: 100;
+}
+
+.gender-item {
+    width: 3%;
+    font-family: khmerOsMuolLight !important;
+    font-weight: 100;
+}
+
+.date-item {
+    width: 57%;
+    font-family: khmerOsMuolLight !important;
+    font-weight: 100;
+}
+
+.total-item {
+    width: 8%;
+    font-family: khmerOsMuolLight !important;
+    font-weight: 100;
+}
+
+.other-item {
+    width: 6% !important;
+    font-family: khmerOsMuolLight !important;
+    font-weight: 100;
+}
+
+.type-att-cell {
+    text-align: center;
+    font-weight: bold;
+}
+
+.days-date {
+    width: 1.84%;
+}
+
+.khmer-name-item {
+    font-family: khmerOsMuolLight !important;
+    font-weight: 100;
+    width: 9%;
+}
+
+.eng-name-item {
+    font-family: khmerOsMuolLight !important;
+    font-weight: 100;
+    width: 11%;
+}
+
+.name-container {
+    display: flex;
+    justify-content: center;
+}
+
+.name-container tr td {
+    border: 1.5px solid #008BFF;
+}
+
+.attenance-table tbody tr td {
+    color: #008BFF;
+    font-size: 13px;
+}
+
+.first-col {
+    text-align: center;
+
+}
+
+.first-col-gender{
+    text-align: center;
+    font-family: khmerOsSiemReap !important;
+}
+
+.name-col-khmer {
+    padding-left: 3px;
+    font-family: khmerOsSiemReap !important;
+}
+
+.name-col-eng {
+    padding-left: 3px;
+    font-family: Arial !important;
+}
+
+.attenance-footer {
+    display: flex;
+    margin: 2px 20px 0px 20px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.attenance-footer-left {
+    width: 190px;
+    height: 100px;
+    padding: 4px 20px 4px 20px;
+    background-color: #deeffd;
+}
+
+.attenance-footer-center {
+    width: 10px;
+}
+
+.attenance-footer-right {
+    width: 1090px;
+    border: 3px solid #deeffd;
+    font-size: 10px;
+    font-family: khmerOsMuolLight !important;
+}
+
+.attenance-footer-right-item {
+    font-family: khmerOsSiemReap !important;
+}
+
+.attenance-footer-left-note {
+    text-align: center;
+    font-size: 10px;
+    font-family: khmerOsMuolLight !important;
+}
+
+.attenance-footer-bottom {
+    margin: 2px 20px 0px 20px;
+    display: flex;
+    justify-content: right;
+}
+
+.attenance-footer-bottom-title {
+    /* width: 25%; */
+    text-align: center;
+}
+
+.attenance-footer-left-status-title {
+    padding: 1px;
+    font-size: 10px;
+    font-family: khmerOsSiemReap !important;
+    font-weight: bold;
+}
+
+.attenance-footer-left-come-status {
+    width: 20px;
+    height: 12px;
+    background-color: blue;
+}
+
+.attenance-footer-left-late-status {
+    width: 20px;
+    height: 12px;
+    background-color: green;
+}
+
+.attenance-footer-left-permission-status {
+    width: 20px;
+    height: 12px;
+    background-color: rgb(224, 224, 86);
+}
+
+.attenance-footer-left-absent-status {
+    width: 20px;
+    height: 12px;
+    background-color: red;
+}
+
+.attenance-footer-bottom-title-date {
+    font-size: 10px;
+    font-family: khmerOsSiemReap !important;
+    font-weight: 550;
+}
+
+.attenance-footer-bottom-title-teachername {
+    font-size: 10px;
+    font-family: khmerOsMuolLight !important;
+}
+
+.come-status {
+    color: blue;
+    text-align: center;
+    font-weight: bold;
+}
+
+.late-status {
+    color: green;
+    text-align: center;
+    font-weight: bold;
+}
+
+.permission-status {
+    color: rgb(224, 224, 86);
+    text-align: center;
+    font-weight: bold;
+}
+
+.absence-status {
+    color: red;
+    text-align: center;
+    font-weight: bold;
+}

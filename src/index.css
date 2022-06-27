@@ -11,3 +11,53 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: Bayon;
+  src: url('./assets/fonts/Bayon.ttf');
+}
+
+@font-face {    
+  font-family: khmerOsSiemReap;
+  src: url('./assets/fonts/KhmerOSsiemreap.ttf');
+}
+
+@font-face {
+  font-family: khmerOsContent;
+  src: url('./assets/fonts/KhmerOSContent.ttf');
+}
+
+@font-face {
+  font-family: khmerOsMuolLight;
+  src: url('./assets/fonts/KhmerOSmuollight.ttf');
+}
+
+@font-face {
+  font-family: Kantumruy;
+  src: url('./assets/fonts/Kantumruy.ttf');
+}
+
+@font-face {
+  font-family: TactTeng;
+  src: url('./assets/fonts/TACTENG.TTF');
+}
+
+@font-face {
+  font-family: WingDing;
+  src: url('./assets/fonts/wingding.ttf');
+}
+
+@font-face {
+  font-family: CenturyFont;
+  src: url('./assets/fonts/Century.ttf');
+}
+
+@font-face {
+  font-family: CenturyBold;
+  src: url('./assets/fonts/CenturyBold.TTF');
+}
+
+@font-face {
+  font-family: Montserrat;
+  src: url('./assets/fonts/Montserrat.ttf');
+}

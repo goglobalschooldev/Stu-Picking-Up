@@ -22,7 +22,6 @@ import { GiGraduateCap } from 'react-icons/gi';
 import { FaUserCheck } from "react-icons/fa"
 import {AiOutlineSchedule} from "react-icons/ai"
 
-
 export default function SectionShiftCard({ data, index }) {
     const history = useHistory()
     const { isOpen, onOpen, onClose } = useDisclosure()

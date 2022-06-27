@@ -1,4 +1,4 @@
-import {gql} from '@apollo/client'
+import { gql } from '@apollo/client'
 
 export const CREATE_ATTENDANCE = gql`
 mutation createAttendance($newAttendance: AttendanceInput) {
@@ -45,6 +45,27 @@ query GetStudentAttendanceWithPagination($sectionShiftId: ID!, $page: Int, $limi
       hasNextPage
       totalDocs
     }
+  }
+}
+`
+
+export const GET_STUDENT_ATTENDANCE_BY_MONTH = gql`
+query GetStudentAttendanceByMonth($month: Int, $academicYearId: ID, $sectionShiftId: ID) {
+  getStudentAttendanceByMonth(month: $month, academicYearId: $academicYearId, sectionShiftId: $sectionShiftId) {
+    month
+    day
+    late
+    present
+    permission
+    absent
+    attendanceDate
+    firstName
+    lastName
+    englishName
+    gender
+    studentId
+    student
+    remark
   }
 }
 `
