@@ -10,11 +10,11 @@ import {
   Image,
   ModalCloseButton,
   ModalBody,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 import { FiPrinter } from "react-icons/fi";
 import ReactToPrint from "react-to-print";
 import moment from "moment";
-import momentkh from '@thyrith/momentkh'
+import momentkh from "@thyrith/momentkh";
 import { getKhmerNumber } from "../function/fn";
 import OriginalLogo from "../images/officail_logo.png";
 import { useLazyQuery, useQuery } from "@apollo/client";
@@ -29,17 +29,15 @@ export default function PrintAttendance({
   printData,
   sectionShift,
   classId,
-  daysMonth
+  daysMonth,
 }) {
-
-  console.log("printData::", printData)
-  let teacherData = sectionShift?.sections?.filter(e => e?.subjectId?.subjectName?.trim() === "ភាសាខ្មែរ")[0]
+  console.log("printData::", printData);
+  let teacherData = sectionShift?.sections?.filter(
+    (e) => e?.subjectId?.subjectName?.trim() === "ភាសាខ្មែរ"
+  )[0];
   const [currentMonth, setCurrentMonth] = useState("");
-  const [attendanceMonth, setAttendanceMonth] = useState("");
-  const [sectionShiftData, setSectionShiftData] = useState(null);
   const [classByIdData, setClassByIdData] = useState(null);
-  const [addAttData, setAddAttData] = useState();
-  const [khmerDateString, setKhmerDateString] = useState("")
+  const [khmerDateString, setKhmerDateString] = useState("");
 
   //  Print
   const componentRef = React.useRef(null);
@@ -94,10 +92,10 @@ export default function PrintAttendance({
 
   useEffect(() => {
     let khMoment = momentkh(moment);
-    setKhmerDateString(khMoment()?.toLunarDate('ថ្ងៃW dN ខែm ឆ្នាំa e ព.ស b'))
-  }, [])
+    setKhmerDateString(khMoment()?.toLunarDate("ថ្ងៃW dN ខែm ឆ្នាំa e ព.ស b"));
+  }, []);
 
-  let programmName = sectionShift?.programId?.programmName
+  let programmName = sectionShift?.programId?.programmName;
 
   let firstAcademic = getKhmerNumber(
     sectionShift?.academicYearId?.academicYear
@@ -178,7 +176,13 @@ export default function PrintAttendance({
   // End Print
 
   return (
-    <Modal closeOnOverlayClick={true} onClose={onClose} isOpen={isOpen} isCentered size={1200}>
+    <Modal
+      closeOnOverlayClick={true}
+      onClose={onClose}
+      isOpen={isOpen}
+      isCentered
+      size={1200}
+    >
       <ModalOverlay />
       <ModalContent width="1200px">
         <ModalHeader>Print Schedule</ModalHeader>
@@ -220,12 +224,19 @@ export default function PrintAttendance({
               <div class="center-title-attendance">
                 <div class="center-title-container">
                   <div style={{ textAlign: "center" }}>
-                    <div style={{ marginTop: "15px" }} className="top-attendance">
+                    <div
+                      style={{ marginTop: "15px" }}
+                      className="top-attendance"
+                    >
                       ព្រះរាជាណាចក្រកម្ពុជា
                     </div>
                     <div className="top-attendance-en">Kingdom Of Cambodia</div>
-                    <div className="top-attendance">ជាតិ សាសនា ព្រះមហាក្សត្រ</div>
-                    <div className="top-attendance-en">Nation Religion King</div>
+                    <div className="top-attendance">
+                      ជាតិ សាសនា ព្រះមហាក្សត្រ
+                    </div>
+                    <div className="top-attendance-en">
+                      Nation Religion King
+                    </div>
                     <div className="wingding-con">
                       <b>----</b>
                       <span className="wingding">
@@ -235,7 +246,10 @@ export default function PrintAttendance({
                     </div>
                     <>
                       {programmName === "កម្មវិធីភាសាខ្មែរ" ? (
-                        <div className="top-attendance" style={{ marginTop: "6px" }}>
+                        <div
+                          className="top-attendance"
+                          style={{ marginTop: "6px" }}
+                        >
                           បញ្ជីវត្តមានសិស្សប្រចាំថ្ងៃសម្រាប់ខែ{currentMonth}
                         </div>
                       ) : (
@@ -250,8 +264,13 @@ export default function PrintAttendance({
                     <>
                       {programmName === "កម្មវិធីភាសាខ្មែរ" ? (
                         <div className="top-attendance">
-                          {sectionShift?.classId?.gradeId?.gradeName} &quot;{sectionShift?.classId?.className}&quot; {sectionShift?.sectionTypeId?.sectionTypeName === "Morning" ? "ពេលព្រឹក" : "ពេលរសៀល"} បន្ទប់
-                          ៖{" "}
+                          {sectionShift?.classId?.gradeId?.gradeName} &quot;
+                          {sectionShift?.classId?.className}&quot;{" "}
+                          {sectionShift?.sectionTypeId?.sectionTypeName ===
+                          "Morning"
+                            ? "ពេលព្រឹក"
+                            : "ពេលរសៀល"}{" "}
+                          បន្ទប់ ៖{" "}
                           {sectionShift?.classroomId?.classroomName
                             ? sectionShift?.classroomId?.classroomName
                             : "គ្មាន"}
@@ -261,8 +280,9 @@ export default function PrintAttendance({
                           className="top-attendance"
                           style={{ fontWeight: "bold" }}
                         >
-                          {sectionShift?.sectionShiftId?.sectionShiftName}, Time:{" "}
-                          {sectionShift?.sectionTypeId?.sectionTypeName},Room:{" "}
+                          {sectionShift?.sectionShiftId?.sectionShiftName},
+                          Time: {sectionShift?.sectionTypeId?.sectionTypeName}
+                          ,Room:{" "}
                           {sectionShift?.classroomId?.classroomName
                             ? sectionShift?.classroomId?.classroomName
                             : "none"}
@@ -279,7 +299,8 @@ export default function PrintAttendance({
                           className="top-attendance"
                           style={{ fontWeight: "bold" }}
                         >
-                          Academic Year {sectionShift?.academicYearId?.academicYear}
+                          Academic Year{" "}
+                          {sectionShift?.academicYearId?.academicYear}
                         </div>
                       )}
                     </>
@@ -289,56 +310,118 @@ export default function PrintAttendance({
             </div>
             <table class="attenance-table">
               <tr>
-                <th class="no-item" rowSpan="2" style={{
-                  fontWeight: programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
-                }}>
+                <th
+                  class="no-item"
+                  rowSpan="2"
+                  style={{
+                    fontWeight:
+                      programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
+                  }}
+                >
                   {programmName === "កម្មវិធីភាសាខ្មែរ" ? "ល.រ" : "N0"}
                 </th>
-                <th class="id-item" rowSpan="2" style={{
-                  fontWeight: programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
-                }}>
-                  {programmName === "កម្មវិធីភាសាខ្មែរ" ? "អត្តលេខ" : "ID Number"}
+                <th
+                  class="id-item"
+                  rowSpan="2"
+                  style={{
+                    fontWeight:
+                      programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
+                  }}
+                >
+                  {programmName === "កម្មវិធីភាសាខ្មែរ"
+                    ? "អត្តលេខ"
+                    : "ID Number"}
                 </th>
-                <th class="name-item" colSpan="2" style={{
-                  fontWeight: programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
-                }}>
+                <th
+                  class="name-item"
+                  colSpan="2"
+                  style={{
+                    fontWeight:
+                      programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
+                  }}
+                >
                   {programmName === "កម្មវិធីភាសាខ្មែរ"
                     ? "គោន្តនាម និងនាម"
                     : "Student's Name"}
                 </th>
-                <th class="gender-item" rowSpan="2" style={{
-                  fontWeight: programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
-                }}>
+                <th
+                  class="gender-item"
+                  rowSpan="2"
+                  style={{
+                    fontWeight:
+                      programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
+                  }}
+                >
                   {programmName === "កម្មវិធីភាសាខ្មែរ" ? "ភេទ" : "Gender"}
                 </th>
-                <th class="date-item" colSpan={daysMonth.length === 31 ? "31" : (daysMonth.length === 30 ? "30" : (daysMonth.length === 29 ? "29" : "28"))}
-                  style={{ fontWeight: programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold" }}>
-                  {programmName === "កម្មវិធីភាសាខ្មែរ" ? "កាលបរិច្ឆេទ" : "Date"}
+                <th
+                  class="date-item"
+                  colSpan={
+                    daysMonth.length === 31
+                      ? "31"
+                      : daysMonth.length === 30
+                      ? "30"
+                      : daysMonth.length === 29
+                      ? "29"
+                      : "28"
+                  }
+                  style={{
+                    fontWeight:
+                      programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
+                  }}
+                >
+                  {programmName === "កម្មវិធីភាសាខ្មែរ"
+                    ? "កាលបរិច្ឆេទ"
+                    : "Date"}
                 </th>
-                <th class="total-item" colSpan="4" style={{
-                  fontWeight: programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
-                }}>
+                <th
+                  class="total-item"
+                  colSpan="4"
+                  style={{
+                    fontWeight:
+                      programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
+                  }}
+                >
                   {programmName === "កម្មវិធីភាសាខ្មែរ" ? "សរុប" : "Total"}
                 </th>
-                <th class="other-item" rowSpan="2" style={{
-                  fontWeight: programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
-                }}>
+                <th
+                  class="other-item"
+                  rowSpan="2"
+                  style={{
+                    fontWeight:
+                      programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
+                  }}
+                >
                   {programmName === "កម្មវិធីភាសាខ្មែរ" ? "ផ្សេងៗ" : "Others"}
                 </th>
               </tr>
               <tr>
-                <th class="khmer-name-item" style={{
-                  fontWeight: programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
-                }}>
-                  {programmName === "កម្មវិធីភាសាខ្មែរ" ? "ឈ្មោះខ្មែរ" : "Khmer"}
+                <th
+                  class="khmer-name-item"
+                  style={{
+                    fontWeight:
+                      programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
+                  }}
+                >
+                  {programmName === "កម្មវិធីភាសាខ្មែរ"
+                    ? "ឈ្មោះខ្មែរ"
+                    : "Khmer"}
                 </th>
-                <th class="eng-name-item" style={{
-                  fontWeight: programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
-                }}>
-                  {programmName === "កម្មវិធីភាសាខ្មែរ" ? "ឈ្មោះឡាតាំង" : "Latin"}
+                <th
+                  class="eng-name-item"
+                  style={{
+                    fontWeight:
+                      programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
+                  }}
+                >
+                  {programmName === "កម្មវិធីភាសាខ្មែរ"
+                    ? "ឈ្មោះឡាតាំង"
+                    : "Latin"}
                 </th>
                 {daysMonth.map((day, index) => (
-                  <th class="days-date" key={index}>{day}</th>
+                  <th class="days-date" key={index}>
+                    {day}
+                  </th>
                 ))}
                 <th class="come-status">T</th>
                 <th class="late-status">L</th>
@@ -361,14 +444,17 @@ export default function PrintAttendance({
                 <div
                   class="attenance-footer-left-note"
                   style={{
-                    fontWeight: programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
+                    fontWeight:
+                      programmName === "កម្មវិធីភាសាខ្មែរ" ? "" : "bold",
                   }}
                 >
                   {programmName === "កម្មវិធីភាសាខ្មែរ" ? "សម្គាល់" : "Note"}
                 </div>
                 <Flex>
                   <Box w="80%" className="attenance-footer-left-status-title">
-                    {`1. 1 = ${programmName === "កម្មវិធីភាសាខ្មែរ" ? "វត្តមាន" : "Come"}`}
+                    {`1. 1 = ${
+                      programmName === "កម្មវិធីភាសាខ្មែរ" ? "វត្តមាន" : "Come"
+                    }`}
                   </Box>
                   <Box w="20%">
                     <div class="attenance-footer-left-come-status"></div>
@@ -376,7 +462,9 @@ export default function PrintAttendance({
                 </Flex>
                 <Flex>
                   <Box w="80%" className="attenance-footer-left-status-title">
-                    {`2. L = ${programmName === "កម្មវិធីភាសាខ្មែរ" ? "យឺត" : "Late"}`}
+                    {`2. L = ${
+                      programmName === "កម្មវិធីភាសាខ្មែរ" ? "យឺត" : "Late"
+                    }`}
                   </Box>
                   <Box w="20%">
                     <div class="attenance-footer-left-late-status"></div>
@@ -384,9 +472,11 @@ export default function PrintAttendance({
                 </Flex>
                 <Flex>
                   <Box w="80%" className="attenance-footer-left-status-title">
-                    {`3. P = ${programmName === "កម្មវិធីភាសាខ្មែរ"
-                      ? "សុំច្បាប់"
-                      : "Permission"}`}
+                    {`3. P = ${
+                      programmName === "កម្មវិធីភាសាខ្មែរ"
+                        ? "សុំច្បាប់"
+                        : "Permission"
+                    }`}
                   </Box>
                   <Box w="20%">
                     <div class="attenance-footer-left-permission-status"></div>
@@ -394,7 +484,11 @@ export default function PrintAttendance({
                 </Flex>
                 <Flex>
                   <Box w="80%" className="attenance-footer-left-status-title">
-                    {`4. A = ${programmName === "កម្មវិធីភាសាខ្មែរ" ? "អវត្តមាន" : "Absence"}`}
+                    {`4. A = ${
+                      programmName === "កម្មវិធីភាសាខ្មែរ"
+                        ? "អវត្តមាន"
+                        : "Absence"
+                    }`}
                   </Box>
                   <Box w="20%">
                     <div class="attenance-footer-left-absent-status"></div>
@@ -403,46 +497,56 @@ export default function PrintAttendance({
               </div>
               <div class="attenance-footer-center"></div>
               <>
-                {
-                  programmName === "កម្មវិធីភាសាខ្មែរ" ?
-                    <div class="attenance-footer-right">
-                      មតិយោបល់ ៖
-                      <span className="attenance-footer-right-item">
-                        {
-                          printData?.map((d) => (
+                {programmName === "កម្មវិធីភាសាខ្មែរ" ? (
+                  <div class="attenance-footer-right">
+                    មតិយោបល់ ៖
+                    <span className="attenance-footer-right-item">
+                      {printData?.map((d) => (
+                        <>
+                          {d?.remark === null || d?.remark === "" ? (
+                            ""
+                          ) : (
                             <>
-                              {
-                                d?.remark === null || d?.remark === "" ? "" :
-                                  <>
-                                    <span style={{ color: "blue", marginLeft: "10px" }}> - {currentDate.format("DD/MM/YYYY")}</span>
-                                    {` ${d?.fullName} : ${d?.remark}`}
-                                  </>
-                              }
+                              <span
+                                style={{ color: "blue", marginLeft: "10px" }}
+                              >
+                                {" "}
+                                - {currentDate.format("DD/MM/YYYY")}
+                              </span>
+                              {` ${d?.fullName} : ${d?.remark}`}
                             </>
-                          ))
-                        }
-                      </span>
-                    </div>
-                    :
-                    <div class="attenance-footer-right" style={{ fontWeight: "bold" }}>
-                      Comments :
-                      <span className="attenance-footer-right-item">
-                        {
-                          printData?.map((d) => (
+                          )}
+                        </>
+                      ))}
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    class="attenance-footer-right"
+                    style={{ fontWeight: "bold" }}
+                  >
+                    Comments :
+                    <span className="attenance-footer-right-item">
+                      {printData?.map((d) => (
+                        <>
+                          {d?.remark === null || d?.remark === "" ? (
+                            ""
+                          ) : (
                             <>
-                              {
-                                d?.remark === null || d?.remark === "" ? "" :
-                                  <>
-                                    <span style={{ color: "blue", marginLeft: "10px" }}> - {currentDate.format("DD/MM/YYYY")}</span>
-                                    {` ${d?.englishName} : ${d?.remark}`}
-                                  </>
-                              }
+                              <span
+                                style={{ color: "blue", marginLeft: "10px" }}
+                              >
+                                {" "}
+                                - {currentDate.format("DD/MM/YYYY")}
+                              </span>
+                              {` ${d?.englishName} : ${d?.remark}`}
                             </>
-                          ))
-                        }
-                      </span>
-                    </div>
-                }
+                          )}
+                        </>
+                      ))}
+                    </span>
+                  </div>
+                )}
               </>
             </div>
             <div class="attenance-footer-bottom">
@@ -450,7 +554,10 @@ export default function PrintAttendance({
                 <>
                   {programmName === "កម្មវិធីភាសាខ្មែរ" ? (
                     <div>
-                      <span className="attenance-footer-bottom-title-date" style={{ marginTop: "10px" }}>
+                      <span
+                        className="attenance-footer-bottom-title-date"
+                        style={{ marginTop: "10px" }}
+                      >
                         {khmerDateString}
                       </span>
                     </div>
@@ -462,12 +569,19 @@ export default function PrintAttendance({
                   {programmName === "កម្មវិធីភាសាខ្មែរ" ? (
                     <div>
                       <span className="attenance-footer-bottom-title-date">
-                        {`សៀមរាប ថ្ងៃទី${getKhmerNumber(moment(currentDate).format("DD"))} ខែ${attendanceMonth} ឆ្នាំ${getKhmerNumber(moment(currentDate).format("YYYY"))}`}
+                        {`សៀមរាប ថ្ងៃទី${getKhmerNumber(
+                          moment(currentDate).format("DD")
+                        )} ខែ${currentMonth} ឆ្នាំ${getKhmerNumber(
+                          moment(currentDate).format("YYYY")
+                        )}`}
                       </span>
                     </div>
                   ) : (
                     <div>
-                      <span className="attenance-footer-bottom-title-date" style={{ marginTop: "10px" }}>
+                      <span
+                        className="attenance-footer-bottom-title-date"
+                        style={{ marginTop: "10px" }}
+                      >
                         Siem Reap, Date: {currentDate.format("DD/MMMM/YYYY")}
                       </span>
                     </div>
@@ -492,18 +606,21 @@ export default function PrintAttendance({
                   {programmName === "កម្មវិធីភាសាខ្មែរ" ? (
                     <div style={{ margin: "50px 0px 0px 60px" }}>
                       <span className="attenance-footer-bottom-title-teachername">
-                        {teacherData?.leadTeacherId?.lastName + " " + teacherData?.leadTeacherId?.firstName}
+                        {teacherData?.leadTeacherId?.lastName +
+                          " " +
+                          teacherData?.leadTeacherId?.firstName}
                       </span>
                     </div>
                   ) : (
                     <div style={{ margin: "50px 0px 0px 60px" }}>
                       <span className="attenance-footer-bottom-title-date">
-                        {teacherData?.leadTeacherId?.lastName + " " + teacherData?.leadTeacherId?.firstName}
+                        {teacherData?.leadTeacherId?.lastName +
+                          " " +
+                          teacherData?.leadTeacherId?.firstName}
                       </span>
                     </div>
                   )}
                 </>
-
               </div>
             </div>
           </div>
@@ -520,6 +637,6 @@ export default function PrintAttendance({
           </div>
         </ModalBody>
       </ModalContent>
-    </Modal >
+    </Modal>
   );
 }
